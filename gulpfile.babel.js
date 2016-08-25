@@ -1,69 +1,11 @@
 import 'babel-polyfill';
-import path from 'path';
 import gulp from 'gulp';
-import load from 'gulp-load-plugins';
-import {sync as globSync} from 'globby';
-import addTarget from './packages/gulp-boiler-add-task-target';
-import getTasks from './packages/gulp-boiler-require-dir';
-import lazyLoad from './packages/gulp-boiler-lazy-task';
 import babel from './tasks/babel';
+import bootstrap from './bootstrap.js';
 
-addTarget(gulp);
-
-const loadOpts = {
-  pattern: [
-    'gulp-*',
-    'gulp.*',
-    'del',
-    'run-sequence',
-    'browser-sync'
-  ],
-  lazy: false,
-  rename: {
-    'gulp-util': 'gutil',
-    'run-sequence': 'sequence',
-    'gulp-if': 'gulpIf'
-  }
-};
-
-const packages = ['./package.json', ...globSync('./packages/*/package.json')];
-const plugins = packages.reduce((acc, fp) => {
-  const config = path.resolve(fp);
-  const opts = Object.assign({}, loadOpts, {config});
-  const plugins = load(opts);
-
-  return {
-    ...acc,
-    ...plugins
-  };
-}, {});
-
-const isDev = process.argv.includes('watch');
-const environment = {
-  isLocalDev: true,
-  isDev
-};
-
-const utils = {
-  addbase(...args) {
-    return path.join.apply(path, [process.cwd(), ...args]);
-  },
-  addroot(...args) {
-    return this.addbase.apply(this, ['packages', ...args]);
-  },
-  getTarget({name}) {
-    return name.split(':').slice(-1)[0];
-  }
-};
-
-const sources = {
-  buildDir: 'dist'
-};
-
-const config = {environment, sources, utils};
-
-const tasksObj = getTasks();
-const tasks = lazyLoad(tasksObj, gulp, plugins, config);
+const {tasks, plugins, config} = bootstrap(gulp);
+const {utils} = config;
+const {addbase} = utils;
 
 gulp.task('lint:test', tasks.eslint);
 gulp.task('lint:build', tasks.eslint);
@@ -74,8 +16,8 @@ const baseTasks = gulp.series('lint', 'babel');
 
 gulp.task('watch:build', () => {
   gulp.watch([
-    utils.addbase('packages/*/src/**/*.js'),
-    utils.addbase('gulpfile.babel.js')
+    addbase('packages/*/src/**/*.js'),
+    addbase('gulpfile.babel.js')
   ]).on('change', baseTasks);
 });
 

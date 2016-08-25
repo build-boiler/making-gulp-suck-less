@@ -1,5 +1,5 @@
 {
-  "name": "gulp-boiler-config",
+  "name": "gulp-boiler-load-plugins",
   "version": "1.0.0",
   "description": "Gulp suck-less boilerplate utility for lazy loading tasks and passing config",
   "main": "dist/index.js",
@@ -8,10 +8,10 @@
   "homepage": "https://github.com/dtothefp/build-boiler",
   "repository": {
     "type": "git",
-    "url": "git://github.com/dtothefp/gulp-boiler-config/packages/gulp-boiler-require-dir"
+    "url": "git://github.com/dtothefp/gulp-boiler-load-plugins/packages/gulp-boiler-require-dir"
   },
   "bugs": {
-    "url": "https://github.com/dtothefp/gulp-boiler-config/issues"
+    "url": "https://github.com/dtothefp/gulp-boiler-load-plugins/issues"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -20,6 +20,7 @@
     "gulp"
   ],
   "dependencies": {
-    "merge-deep": "^3.0.0"
+    "globby": "^6.0.0",
+    "gulp-load-plugins": "^1.2.4"
   }
 }
