@@ -6,7 +6,7 @@
  * @param {Object} gulp the gulp module
  * @return {undefined}
  */
-export default function(gulp) {
+export default function(gulp, tasks) {
   const gulpProto = gulp.Gulp && gulp.Gulp.prototype && gulp.Gulp.prototype._runTask;
   const isGulp3 = typeof gulpProto === 'function';
 
@@ -14,9 +14,8 @@ export default function(gulp) {
     gulp.Gulp.prototype.__runTask = gulp.Gulp.prototype._runTask;
     gulp.Gulp.prototype._runTask = function(task) {
       const {name} = task;
-      const metaData = {name};
 
-      this.metaData = {metaData};
+      this.metaData = {name};
       this.__runTask(task);
     };
   } else {

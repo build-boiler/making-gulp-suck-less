@@ -4,8 +4,9 @@ import gulp from 'gulp';
 import load from 'gulp-load-plugins';
 import {sync as globSync} from 'globby';
 import addTarget from './packages/gulp-boiler-add-task-target';
+import getTasks from './packages/gulp-boiler-require-dir';
+import lazyLoad from './packages/gulp-boiler-lazy-task';
 import babel from './tasks/babel';
-import eslint from './tasks/eslint';
 
 addTarget(gulp);
 
@@ -50,7 +51,7 @@ const utils = {
   addroot(...args) {
     return this.addbase.apply(this, ['packages', ...args]);
   },
-  getTaskName({name}) {
+  getTarget({name}) {
     return name.split(':').slice(-1)[0];
   }
 };
@@ -60,27 +61,24 @@ const sources = {
 };
 
 const config = {environment, sources, utils};
-const lint = function(cb) {
-  const metaData = this;
-  const fn = eslint(gulp, plugins, Object.assign({}, config, metaData));
 
-  return fn(cb);
-};
+const tasksObj = getTasks();
+const tasks = lazyLoad(tasksObj, gulp, plugins, config);
 
-gulp.task('lint:test', lint);
-gulp.task('lint:build', lint);
+gulp.task('lint:test', tasks.eslint);
+gulp.task('lint:build', tasks.eslint);
 gulp.task('lint', gulp.parallel('lint:test', 'lint:build'));
 gulp.task('babel', babel(gulp, plugins, config));
 
-const tasks = gulp.series('lint', 'babel');
+const baseTasks = gulp.series('lint', 'babel');
 
 gulp.task('watch:build', () => {
   gulp.watch([
     utils.addbase('packages/*/src/**/*.js'),
     utils.addbase('gulpfile.babel.js')
-  ]).on('change', tasks);
+  ]).on('change', baseTasks);
 });
 
-gulp.task('build', tasks);
-gulp.task('watch', gulp.series(tasks, 'watch:build'));
+gulp.task('build', baseTasks);
+gulp.task('watch', gulp.series(baseTasks, 'watch:build'));
 gulp.task('default', gulp.series('babel'));

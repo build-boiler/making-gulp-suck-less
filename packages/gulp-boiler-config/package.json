@@ -1,0 +1,23 @@
+{
+  "name": "gulp-boiler-config",
+  "version": "1.0.0",
+  "description": "Gulp suck-less boilerplate utility for lazy loading tasks and passing config",
+  "main": "dist/index.js",
+  "author": "DtotheFP",
+  "license": "Copyright 2016",
+  "homepage": "https://github.com/dtothefp/build-boiler",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dtothefp/gulp-boiler-config/packages/gulp-boiler-require-dir"
+  },
+  "bugs": {
+    "url": "https://github.com/dtothefp/gulp-boiler-config/issues"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "keywords": [
+    "gulp"
+  ],
+  "dependencies": {}
+}

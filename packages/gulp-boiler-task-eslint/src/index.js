@@ -2,21 +2,22 @@ import path from 'path';
 import makeEslintConfig from 'boiler-config-eslint';
 import formatter from 'eslint-friendly-formatter';
 
-export default function(gulp, plugins, config) {
-  const {environment, metaData, utils} = config;
+export default function(gulp, plugins, config, metaData) {
+  const {environment, utils} = config;
   const {eslint} = plugins;
   const {isDev, isLocalDev} = environment;
-  const {addbase, getTaskName} = utils;
+  const {addbase, getTarget} = utils;
   let src, base;
 
   return () => {
-    const target = getTaskName(metaData);
+    const target = getTarget(metaData);
+    const rootDir = path.resolve(__dirname, '..', '..', '*');
 
     if (target === 'test') {
-      base = path.join(__dirname, 'test/**/*.js');
+      base = path.join(rootDir, 'test/**/*.js');
       src = [addbase('test', '**/*.js')];
     } else if (target === 'build') {
-      base = path.join(__dirname, 'src/**/*.js');
+      base = path.join(rootDir, 'src/**/*.js');
       src = [
         addbase('tasks', '**/*.js'),
         addbase('gulpfile.babel.js')
