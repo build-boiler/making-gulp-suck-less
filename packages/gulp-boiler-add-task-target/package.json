@@ -1,0 +1,25 @@
+{
+  "name": "gulp-boiler-task-eslint",
+  "version": "1.0.0",
+  "description": "Gulp suck-less boilerplate utility for adding `:target` to gulp instance",
+  "main": "dist/index.js",
+  "author": "DtotheFP",
+  "license": "Copyright 2016",
+  "homepage": "https://github.com/dtothefp/build-boiler",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dtothefp/making-gulp-suck-less/packages/gulp-boiler-add-task-target"
+  },
+  "bugs": {
+    "url": "https://github.com/dtothefp/making-gulp-suck-less/issues"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "keywords": [
+    "gulp"
+  ],
+  "dependencies": {
+    "undertaker-registry": "^1.0.0"
+  }
+}
