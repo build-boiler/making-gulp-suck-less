@@ -23,21 +23,53 @@ function removeExt(fp) {
 }
 
 /**
+ * Require or cache the file
+ * @param {String} name the task name
+ * @param {String} fp filepath
+ * @param {Object} opts options
+ * @return {Object} camelCase name key and file/lazy file value
+ */
+function requireFile(name, fp, opts) {
+  const {lazy = true} = opts;
+  const taskFn = lazy ? () => require(fp) : fp;
+
+  return {
+    [ camelCase(name) ]: taskFn
+  };
+}
+
+/**
  * Creates an object with keys corresponding to the Gulp task name and
  * values corresponding to the callback function passed as the second
  * argument to `gulp.task`
  * @param {String} basePath path to directory
+ * @param {Object} opts options
  * @return {Object} map of task names to callback functions to be used in `gulp.task`
  */
-function recurseTasks(basePath) {
-  const dirs = readdirSync(basePath);
+function recurseTasks(basePath, opts) {
+  let dirs;
+
+  try {
+    const pkgPath = path.join(basePath, 'package.json');
+
+    statSync(pkgPath);
+
+    const {main} = require(pkgPath);
+    const name = removeExt(main);
+
+    return requireFile(name, basePath, opts);
+  } catch (err) {
+    dirs = readdirSync(basePath);
+  }
 
   return dirs.reduce((acc, name) => {
     const taskPath = path.join(basePath, name);
     const taskStat = statSync(taskPath);
-    let taskName;
+    let taskName, pkgStat;
 
-    if (taskStat.isDirectory()) {
+    if (pkgStat && pkgStat.isFile()) {
+      taskName = name;
+    } else if (taskStat.isDirectory()) {
       try {
         statSync(
           path.join(taskPath, 'index.js')
@@ -53,7 +85,7 @@ function recurseTasks(basePath) {
 
     return {
       ...acc,
-      [ camelCase(taskName) ]: require(taskPath)
+      ...requireFile(taskName, taskPath, opts)
     };
   }, {});
 }
@@ -71,10 +103,10 @@ export default function(opts = {}) {
   if (Array.isArray(base)) {
     tasks = base.reduce((acc, fp) => ({
       ...acc,
-      ...recurseTasks(fp)
+      ...recurseTasks(fp, opts)
     }), {});
   } else {
-    tasks = recurseTasks(base);
+    tasks = recurseTasks(base, opts);
   }
 
   return tasks;

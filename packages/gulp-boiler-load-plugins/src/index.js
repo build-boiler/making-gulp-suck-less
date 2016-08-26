@@ -30,7 +30,7 @@ export default function(opts = {}) {
     }, rename)
   };
   const defaultPkg = './package.json';
-  const packageFps = globSync(packages || './packages/*/package.json');
+  const packageFps = globSync(packages || defaultPkg);
 
   if (!packageFps.includes(defaultPkg)) {
     packageFps.unshift(defaultPkg);

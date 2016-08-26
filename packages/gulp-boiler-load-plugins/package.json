@@ -8,7 +8,7 @@
   "homepage": "https://github.com/dtothefp/build-boiler",
   "repository": {
     "type": "git",
-    "url": "git://github.com/dtothefp/gulp-boiler-load-plugins/packages/gulp-boiler-require-dir"
+    "url": "git://github.com/dtothefp/packages/gulp-boiler-load-plugins"
   },
   "bugs": {
     "url": "https://github.com/dtothefp/gulp-boiler-load-plugins/issues"

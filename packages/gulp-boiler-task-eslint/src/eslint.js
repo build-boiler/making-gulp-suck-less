@@ -2,8 +2,15 @@ import path from 'path';
 import makeEslintConfig from 'boiler-config-eslint';
 import formatter from 'eslint-friendly-formatter';
 
-export default function(gulp, plugins, config, metaData) {
-  const {environment, utils} = config;
+/**
+ * Typical `gulp-boiler` task function
+ * @param {Object} gulp Gulp instance
+ * @param {Object} plugins plugins gathered from `gulp-load-plugins`
+ * @param {Object} config configuration utilities
+ * @return {Function} to be registered with gulp task
+ */
+export default function(gulp, plugins, config) {
+  const {environment, utils, metaData} = config;
   const {eslint} = plugins;
   const {isDev, isLocalDev} = environment;
   const {addbase, getTarget} = utils;

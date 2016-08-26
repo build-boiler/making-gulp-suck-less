@@ -1,5 +1,5 @@
 {
-  "name": "gulp-boiler-task-eslint",
+  "name": "gulp-boiler-add-task-target",
   "version": "1.0.0",
   "description": "Gulp suck-less boilerplate utility for adding `:target` to gulp instance",
   "main": "dist/index.js",

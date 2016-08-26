@@ -19,5 +19,7 @@
   "keywords": [
     "gulp"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "kind-of": "^3.0.4"
+  }
 }

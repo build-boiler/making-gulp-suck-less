@@ -8,7 +8,7 @@ import path from 'path';
 export default function({env}) {
   const isDev = env === 'development';
   const rootDir = path.resolve(__dirname, '..', '..');
-  const isLocalDev = path.dirname(rootDir) === 'packages';
+  const isLocalDev = path.basename(rootDir) === 'packages';
 
   return {
     env,
