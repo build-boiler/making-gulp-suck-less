@@ -20,6 +20,10 @@ try {
           dir: 'templates',
           layouts: 'layouts',
           pages: 'pages'
+        },
+        bundler: {
+          jsBundle: 'main',
+          cssBundle: 'main'
         }
       }
       //env,
