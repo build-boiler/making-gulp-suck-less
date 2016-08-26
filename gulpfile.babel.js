@@ -15,6 +15,13 @@ try {
       //patterns
     },
     config: {
+      sources: {
+        templating: {
+          dir: 'templates',
+          layouts: 'layouts',
+          pages: 'pages'
+        }
+      }
       //env,
       //sources,
       //tasks,
@@ -40,18 +47,20 @@ try {
   gulp.task('lint:build', tasks.eslint);
   gulp.task('lint', gulp.parallel('lint:test', 'lint:build'));
   gulp.task('babel', babel(gulp, plugins, config));
+  gulp.task('assemble', tasks.assemble);
 
   const baseTasks = gulp.series('lint', 'babel');
 
   gulp.task('watch:build', () => {
     gulp.watch([
+      addbase('tasks/**/*.js'),
       addbase('packages/*/src/**/*.js'),
       addbase('gulpfile.babel.js')
     ]).on('change', baseTasks);
   });
 
-  gulp.task('build', baseTasks);
-  gulp.task('watch', gulp.series(baseTasks, 'watch:build'));
+  gulp.task('build', gulp.series(baseTasks, 'assemble'));
+  gulp.task('watch', gulp.series('build', 'watch:build'));
   gulp.task('default', gulp.series('babel'));
 
   const say = async (prom) => {
