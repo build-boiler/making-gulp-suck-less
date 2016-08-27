@@ -14,7 +14,7 @@ export default function(config, {target}) {
   const {addbase} = utils;
   const statsFile = addbase(buildDir, `webpack-${target}-stats.json`);
   const defaultConfig = {
-    debug: isDev,
+    debug: false,
     webpack_assets_file_path: statsFile
   };
   const toolsConfigMap = {

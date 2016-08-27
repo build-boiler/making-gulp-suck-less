@@ -50,15 +50,7 @@ export default function(gulp, plugins, config) {
       }
 
       if (!isDev) {
-        log(stats.toString());
-      }
-
-      //avoid multiple calls of gulp callback
-      if (kind(cb) === 'function') {
-        let gulpCb = cb;
-
-        cb = null;
-        gulpCb();
+        //log(stats.toString());
       }
     }
 
@@ -70,27 +62,29 @@ export default function(gulp, plugins, config) {
       logger('done', `Webpack Bundled ${target} bundle in ${stats.endTime - stats.startTime}ms`);
 
       if (isDev && stats.hasErrors() || stats.hasWarnings()) {
-        const {errors, warnings} = stats.toJson({errorDetails: true});
+        const {errors, warnings} = stats.compilation;
+        let messages;
 
-        [errors, warnings].forEach((stat, i) => {
-          let type = i ? 'warning' : 'error';
-          if (stat.length) {
-            const [statStr] = stat;
-            /*eslint-disable*/
-            const [first, ...rest] = statStr.split('\n\n');
-            /*eslint-enable*/
-            if (rest.length) {
-              logger(target, `bundle ${type}]\n`, rest.join('\n\n'));
-            } else {
-              logger(target, `bundle ${type}]`, stats.toString());
-            }
-          }
-        });
+        if (errors.length === warnings.length) {
+          messages = errors;
+        } else {
+          messages = [...errors, ...warnings];
+        }
+
+        messages.forEach(({message}) => log(message));
+      }
+
+      //avoid multiple calls of gulp callback
+      if (kind(cb) === 'function') {
+        let gulpCb = cb;
+
+        cb = null;
+        gulpCb();
       }
     });
 
     if (isDev) {
-      if (hot) {
+      if (hot && target === 'js') {
         const Express = require('express');
         const middleware = require('webpack-dev-middleware');
         const hotMiddleware = require('webpack-hot-middleware');

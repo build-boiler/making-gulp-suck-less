@@ -64,7 +64,7 @@ export default function(config, opts) {
         `path=${publicPath}__webpack_hmr`,
         'reload=true'
       ];
-      const hotEntry = hot && isDev ? `webpack-hot-middleware/client?${hmrOpts.join('&')}` : [];
+      const hotEntry = hot && isDev ? [`webpack-hot-middleware/client?${hmrOpts.join('&')}`] : [];
       const eslintConfig = {
         isDev,
         lintEnv: 'web',

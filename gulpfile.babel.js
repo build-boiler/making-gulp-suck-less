@@ -93,7 +93,7 @@ try {
     ]).on('change', baseTasks);
   });
 
-  gulp.task('build', gulp.series(baseTasks, 'assemble'));
+  gulp.task('build', gulp.series(baseTasks, 'webpack', 'assemble'));
   gulp.task('watch', gulp.series('build', 'watch:build'));
   gulp.task('default', gulp.series('babel'));
 

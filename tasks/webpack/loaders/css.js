@@ -81,10 +81,12 @@ export default function(config, opts) {
   const loaders = [
     {
       test: /\.css$/,
+      exclude: /node_modules/,
       loader: cssLoader
     },
     {
       test: /\.scss$/,
+      exclude: /node_modules/,
       loader: sassLoader
     }
   ];

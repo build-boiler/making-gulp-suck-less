@@ -48,7 +48,7 @@ export default function(config, opts) {
   const preLoaders = [
     {
       test: /\.jsx?$/,
-      exclude: [/node_modules/],
+      exclude: /node_modules/,
       loader: 'eslint-loader'
     }
   ];
