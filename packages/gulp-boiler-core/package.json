@@ -5,13 +5,13 @@
   "main": "dist/index.js",
   "author": "DtotheFP",
   "license": "Copyright 2016",
-  "homepage": "https://github.com/dtothefp/build-boiler",
+  "homepage": "https://github.com/build-boiler/build-boiler",
   "repository": {
     "type": "git",
-    "url": "git://github.com/dtothefp/making-gulp-suck-less/packages/gulp-boiler-core"
+    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulp-boiler-core"
   },
   "bugs": {
-    "url": "https://github.com/dtothefp/making-gulp-suck-less/issues"
+    "url": "https://github.com/build-boiler/making-gulp-suck-less/issues"
   },
   "engines": {
     "node": ">=6.0.0"

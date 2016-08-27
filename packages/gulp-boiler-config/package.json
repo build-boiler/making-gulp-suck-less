@@ -5,13 +5,13 @@
   "main": "dist/index.js",
   "author": "DtotheFP",
   "license": "Copyright 2016",
-  "homepage": "https://github.com/dtothefp/build-boiler",
+  "homepage": "https://github.com/build-boiler/build-boiler",
   "repository": {
     "type": "git",
-    "url": "git://github.com/dtothefp/gulp-boiler-config/packages/gulp-boiler-require-dir"
+    "url": "git://github.com/build-boiler/gulp-boiler-config/packages/gulp-boiler-require-dir"
   },
   "bugs": {
-    "url": "https://github.com/dtothefp/gulp-boiler-config/issues"
+    "url": "https://github.com/build-boiler/gulp-boiler-config/issues"
   },
   "engines": {
     "node": ">=6.0.0"
