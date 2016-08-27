@@ -7,7 +7,7 @@ export default function(gulp, plugins, config) {
   const {webpack: taskConfig} = tasks;
   const {hot = true} = taskConfig;
   const {isDev, assetPath} = environment;
-  const {getTaskName} = utils;
+  const {getTarget} = utils;
   const {buildDir, devPath: devHost, devPort, hotPort, bundler} = sources;
   const {
     jsBundle = 'main',
@@ -20,7 +20,7 @@ export default function(gulp, plugins, config) {
   let publicPath;
 
   return (cb) => {
-    const target = getTaskName(metaData);
+    const target = getTarget(metaData);
     const devPath = isDev ? `http://${devHost}:${hotPort}/` : '/';
     const bsPath = isDev ? `http://${devHost}:${devPort}/` : '/';
 
@@ -50,7 +50,15 @@ export default function(gulp, plugins, config) {
       }
 
       if (!isDev) {
-        gutil.log(stats.toString());
+        log(stats.toString());
+      }
+
+      //avoid multiple calls of gulp callback
+      if (kind(cb) === 'function') {
+        let gulpCb = cb;
+
+        cb = null;
+        gulpCb();
       }
     }
 
@@ -61,7 +69,7 @@ export default function(gulp, plugins, config) {
     compiler.plugin('done', (stats) => {
       logger('done', `Webpack Bundled ${target} bundle in ${stats.endTime - stats.startTime}ms`);
 
-      if (stats.hasErrors() || stats.hasWarnings()) {
+      if (isDev && stats.hasErrors() || stats.hasWarnings()) {
         const {errors, warnings} = stats.toJson({errorDetails: true});
 
         [errors, warnings].forEach((stat, i) => {
@@ -78,18 +86,6 @@ export default function(gulp, plugins, config) {
             }
           }
         });
-
-        if (!isDev) {
-          process.exit(1);
-        }
-      }
-
-      //avoid multiple calls of gulp callback
-      if (kind(cb) === 'function') {
-        let gulpCb = cb;
-
-        cb = null;
-        gulpCb();
       }
     });
 

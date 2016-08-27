@@ -7,6 +7,30 @@ import babel from './tasks/babel';
 import bootstrap from './packages/gulp-boiler-core';
 
 try {
+  const webpack = {
+    entry: {
+      js: 'index.js',
+      assets: 'assets.js'
+    },
+    alias: {
+      underscore: 'lodash',
+      'js-cookie': 'jquery.cookie'
+    },
+    define: {
+      BLEEP: JSON.stringify('bloop')
+    },
+    expose: {
+      'Cookie': 'js-cookie'
+    },
+    externals: {
+      jquery: 'jQuery'
+    },
+    provide: {
+      'global.jQuery': 'jquery',
+      'window.jQuery': 'jquery',
+      '$': 'jquery'
+    }
+  };
   const opts = {
     plugins: {
       packages: ['./package.json', './packages/*/package.json']
@@ -25,6 +49,9 @@ try {
           jsBundle: 'main',
           cssBundle: 'main'
         }
+      },
+      tasks: {
+        webpack
       }
       //env,
       //sources,
@@ -50,6 +77,9 @@ try {
   gulp.task('lint:test', tasks.eslint);
   gulp.task('lint:build', tasks.eslint);
   gulp.task('lint', gulp.parallel('lint:test', 'lint:build'));
+  gulp.task('webpack:js', tasks.webpack);
+  gulp.task('webpack:css', tasks.webpack);
+  gulp.task('webpack', gulp.parallel('webpack:js', 'webpack:css'));
   gulp.task('babel', babel(gulp, plugins, config));
   gulp.task('assemble', tasks.assemble);
 
