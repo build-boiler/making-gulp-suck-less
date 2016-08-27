@@ -1,14 +1,14 @@
 {
-  "name": "gulp-boiler-require-dir",
+  "name": "gulpy-boiler-require-dir",
   "version": "1.0.0",
   "description": "Gulp suck-less boilerplate utility for recursively requiring task functions",
   "main": "dist/index.js",
   "author": "DtotheFP",
   "license": "Copyright 2016",
-  "homepage": "https://github.com/build-boiler/build-boiler",
+  "homepage": "https://github.com/build-boiler/making-gulp-suck-less",
   "repository": {
     "type": "git",
-    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulp-boiler-require-dir"
+    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulpy-boiler-require-dir"
   },
   "bugs": {
     "url": "https://github.com/build-boiler/making-gulp-suck-less/issues"

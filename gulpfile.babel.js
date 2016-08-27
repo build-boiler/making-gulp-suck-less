@@ -3,10 +3,12 @@ import path from 'path';
 import gulp from 'gulp';
 import load from 'gulp-load-plugins';
 import {sync as globSync} from 'globby';
-import babel from './tasks/babel';
-import bootstrap from './packages/gulp-boiler-core';
+import Babel from './tasks/babel';
+
+const babel = new Babel();
 
 try {
+  const bootstrap = require('./packages/gulpy-boiler-core/src');
   const webpack = {
     entry: {
       js: 'index.js',
@@ -61,7 +63,7 @@ try {
     dirs: {
       tasks: [
         path.resolve('./tasks'),
-        path.resolve('./packages/gulp-boiler-task-eslint')
+        path.resolve('./packages/gulpy-boiler-task-eslint')
       ]
       //lazy,
       //tasks,
@@ -80,7 +82,7 @@ try {
   gulp.task('webpack:js', tasks.webpack);
   gulp.task('webpack:css', tasks.webpack);
   gulp.task('webpack', gulp.parallel('webpack:js', 'webpack:css'));
-  gulp.task('babel', babel(gulp, plugins, config));
+  gulp.task('babel', babel.task(gulp, plugins, config));
   gulp.task('assemble', tasks.assemble);
 
   const baseTasks = gulp.series('lint', 'babel');
@@ -113,6 +115,7 @@ try {
 
   const loadOpts = {
     pattern: [
+      '!gulpy',
       'gulp-*',
       'gulp.*',
       'del',
@@ -131,14 +134,19 @@ try {
   const plugins = packages.reduce((acc, fp) => {
     const config = path.resolve(fp);
     const opts = Object.assign({}, loadOpts, {config});
-    const plugins = load(opts);
+    let plugins;
+
+    try {
+      plugins = load(opts);
+    } catch (err) {
+      // eslint-disable-line
+    }
 
     return {
       ...acc,
       ...plugins
     };
   }, {});
-
   const isDev = process.argv.includes('watch');
   const environment = {
     isLocalDev: true,
@@ -163,5 +171,5 @@ try {
 
   const config = {environment, sources, utils};
 
-  gulp.task('babel', babel(gulp, plugins, config));
+  gulp.task('babel', babel.task(gulp, plugins, config));
 }

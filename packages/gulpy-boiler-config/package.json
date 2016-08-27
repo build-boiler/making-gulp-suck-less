@@ -1,14 +1,14 @@
 {
-  "name": "gulp-boiler-add-task-target",
+  "name": "gulpy-boiler-config",
   "version": "1.0.0",
-  "description": "Gulp suck-less boilerplate utility for adding `:target` to gulp instance",
+  "description": "Gulp suck-less boilerplate utility for lazy loading tasks and passing config",
   "main": "dist/index.js",
   "author": "DtotheFP",
   "license": "Copyright 2016",
-  "homepage": "https://github.com/build-boiler/build-boiler",
+  "homepage": "https://github.com/build-boiler/making-gulp-suck-less",
   "repository": {
     "type": "git",
-    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulp-boiler-add-task-target"
+    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulpy-boiler-config"
   },
   "bugs": {
     "url": "https://github.com/build-boiler/making-gulp-suck-less/issues"
@@ -20,6 +20,6 @@
     "gulp"
   ],
   "dependencies": {
-    "undertaker-registry": "^1.0.0"
+    "merge-deep": "^3.0.0"
   }
 }

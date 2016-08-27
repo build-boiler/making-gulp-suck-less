@@ -1,14 +1,14 @@
 {
-  "name": "gulp-boiler-core",
+  "name": "gulpy-boiler-core",
   "version": "1.0.0",
   "description": "Gulp suck-less boilerplate eslint task",
   "main": "dist/index.js",
   "author": "DtotheFP",
   "license": "Copyright 2016",
-  "homepage": "https://github.com/build-boiler/build-boiler",
+  "homepage": "https://github.com/build-boiler/making-gulp-suck-less",
   "repository": {
     "type": "git",
-    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulp-boiler-core"
+    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulpy-boiler-core"
   },
   "bugs": {
     "url": "https://github.com/build-boiler/making-gulp-suck-less/issues"
@@ -21,10 +21,10 @@
     "gulp"
   ],
   "dependencies": {
-    "gulp-boiler-add-task-target": "1.0.0",
-    "gulp-boiler-config": "1.0.0",
-    "gulp-boiler-lazy-task": "1.0.0",
-    "gulp-boiler-load-plugins": "1.0.0",
-    "gulp-boiler-require-dir": "1.0.0"
+    "gulpy-boiler-add-task-target": "1.0.0",
+    "gulpy-boiler-config": "1.0.0",
+    "gulpy-boiler-lazy-task": "1.0.0",
+    "gulpy-boiler-load-plugins": "1.0.0",
+    "gulpy-boiler-require-dir": "1.0.0"
   }
 }

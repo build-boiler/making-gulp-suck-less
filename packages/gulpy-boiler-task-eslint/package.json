@@ -1,14 +1,14 @@
 {
-  "name": "gulp-boiler-task-eslint",
+  "name": "gulpy-boiler-task-eslint",
   "version": "1.0.0",
   "description": "Gulp suck-less boilerplate eslint task",
   "main": "dist/eslint.js",
   "author": "DtotheFP",
   "license": "Copyright 2016",
-  "homepage": "https://github.com/build-boiler/build-boiler",
+  "homepage": "https://github.com/build-boiler/making-gulp-suck-less",
   "repository": {
     "type": "git",
-    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulp-boiler-task-eslint"
+    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulpy-boiler-task-eslint"
   },
   "bugs": {
     "url": "https://github.com/build-boiler/making-gulp-suck-less/issues"

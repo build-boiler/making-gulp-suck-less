@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import kind from 'kind-of';
 
 /**
@@ -11,7 +12,9 @@ import kind from 'kind-of';
  * @return {Object} tasks Object with lazy-loaded tasks
  */
 export default function(tasks = {}, gulp, plugins, config, opts = {}) {
-  let {args} = opts;
+  const isInstance = (inst) => inst instanceof EventEmitter;
+  const isConsumableFn = (fn) => !/class/.test(fn.toString()) && fn.length >= 3;
+  let {args = []} = opts;
 
   return Object.keys(tasks).reduce((acc, taskName) => {
     const taskGetter = tasks[taskName];
@@ -21,23 +24,36 @@ export default function(tasks = {}, gulp, plugins, config, opts = {}) {
       throw new Error(`Supplied task must be a function received type ${taskType} from ${taskName}`);
     }
 
-    //lazy load task that has `require` wrapped in a function
-    const task = taskGetter.length ? taskGetter : taskGetter();
-
     args = Array.isArray(args) ? args : [args];
 
     acc[taskName] = function(cb) {
+      //lazy load task that has `require` wrapped in a function
+      const taskFn = isInstance(taskGetter) || isConsumableFn(taskGetter) ? taskGetter : taskGetter();
+
       /**
        * In Gulp3 the `metaData` is put on the Gulp instance and in Gulp4
        * it is bound as the context of the task funtion
        */
       const metaData = gulp.metaData || this.metaData;
-      const gulpFn = task.apply(this, [
-        gulp,
-        plugins,
-        Object.assign({}, config, {metaData}), //add `metaData` to `config`
-        ...args
-      ]);
+      let gulpFn;
+
+      if (isInstance(taskFn)) {
+        //allow class instance
+        gulpFn = taskFn.task.apply(taskFn, [
+          gulp,
+          plugins,
+          Object.assign({}, config, {metaData}), //add `metaData` to `config`
+          ...args
+        ]);
+      } else {
+        //allow function
+        gulpFn = taskFn.apply(this, [
+          gulp,
+          plugins,
+          Object.assign({}, config, {metaData}), //add `metaData` to `config`
+          ...args
+        ]);
+      }
 
       return gulpFn(cb);
     };

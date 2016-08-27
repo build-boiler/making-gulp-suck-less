@@ -23,6 +23,15 @@ function removeExt(fp) {
 }
 
 /**
+ * Check if the Function is a class or plain Funtion
+ * @param {Function|Class} fn
+ * @return {Boolean}
+ */
+function isConsumableFn(fn) {
+  return !/class/.test(fn.toString()) && fn.length >= 3;
+}
+
+/**
  * Require or cache the file
  * @param {String} name the task name
  * @param {String} fp filepath
@@ -31,10 +40,14 @@ function removeExt(fp) {
  */
 function requireFile(name, fp, opts) {
   const {lazy = true} = opts;
-  const taskFn = lazy ? () => require(fp) : fp;
+  const wrapped = () => {
+    const Fn = require(fp);
+
+    return isConsumableFn(Fn) ? Fn : new Fn(name);
+  };
 
   return {
-    [ camelCase(name) ]: taskFn
+    [ camelCase(name) ]: lazy ? wrapped : wrapped()
   };
 }
 

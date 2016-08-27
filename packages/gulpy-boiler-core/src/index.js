@@ -1,8 +1,8 @@
-import addTarget from 'gulp-boiler-add-task-target';
-import loadPlugins from 'gulp-boiler-load-plugins';
-import makeConfig from 'gulp-boiler-config';
-import getTasks from 'gulp-boiler-require-dir';
-import lazyLoad from 'gulp-boiler-lazy-task';
+import addTarget from 'gulpy-boiler-add-task-target';
+import loadPlugins from 'gulpy-boiler-load-plugins';
+import makeConfig from 'gulpy-boiler-config';
+import getTasks from 'gulpy-boiler-require-dir';
+import lazyLoad from 'gulpy-boiler-lazy-task';
 
 /**
  * Bootstrap the `gulp-boiler` system
@@ -14,17 +14,17 @@ import lazyLoad from 'gulp-boiler-lazy-task';
  * @param {Object} opts.wrapper options for `gulp-boiler-lazy-task`
  * @return {Object} config, plugins, tasks
  */
-export default function(gulp, opts = {}) {
+export default function(gulp, opts) {
   addTarget(gulp); //access the gulp task name inside the task
 
   const plugins = loadPlugins(opts.plugins); //opts.pattern, opts.lazy, opts.rename, opts.packages} = opts
   const config = makeConfig(opts.config); //opts.tasks, opts.sources, opts.env, opts.utils
   const tasksObj = getTasks(opts.dirs); //opts.tasks, opts.lazy => default true
-  const tasks = lazyLoad(tasksObj, gulp, plugins, config, opts.wrapper); //opts.args
+  const tasks = lazyLoad(tasksObj, gulp, plugins, config, opts);
 
   return {
-    config,
+    tasks,
     plugins,
-    tasks
+    config
   };
 }

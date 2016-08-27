@@ -1,17 +1,17 @@
 {
-  "name": "gulp-boiler-config",
+  "name": "gulpy-boiler-load-plugins",
   "version": "1.0.0",
   "description": "Gulp suck-less boilerplate utility for lazy loading tasks and passing config",
   "main": "dist/index.js",
   "author": "DtotheFP",
   "license": "Copyright 2016",
-  "homepage": "https://github.com/build-boiler/build-boiler",
+  "homepage": "https://github.com/build-boiler/making-gulp-suck-less",
   "repository": {
     "type": "git",
-    "url": "git://github.com/build-boiler/gulp-boiler-config/packages/gulp-boiler-require-dir"
+    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulpy-boiler-load-plugins"
   },
   "bugs": {
-    "url": "https://github.com/build-boiler/gulp-boiler-config/issues"
+    "url": "https://github.com/build-boiler/making-gulp-suck-less/issues"
   },
   "engines": {
     "node": ">=6.0.0"
@@ -20,6 +20,7 @@
     "gulp"
   ],
   "dependencies": {
-    "merge-deep": "^3.0.0"
+    "globby": "^6.0.0",
+    "gulp-load-plugins": "^1.2.4"
   }
 }
