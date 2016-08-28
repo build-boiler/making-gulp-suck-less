@@ -1,8 +1,8 @@
 import EslintBoiler from '../packages/gulpy-boiler-task-eslint';
 
 export default class Eslint extends EslintBoiler {
-  constructor(name) {
-    super(name);
+  constructor(name, plugins, config) {
+    super(name, plugins, config);
 
     this.on('change', (data) => {
       console.log('**CHANGED**', this.name);

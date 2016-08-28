@@ -1,6 +1,5 @@
 import path from 'path';
 import load from 'gulp-load-plugins';
-import {sync as globSync} from 'globby';
 
 /**
  * Load all the Gulp plugins for the `root` package.json and any additonal specified packages
@@ -13,8 +12,10 @@ import {sync as globSync} from 'globby';
  *
  */
 export default function(opts = {}) {
-  const {pattern, lazy, rename, packages} = opts;
+  const {pattern, lazy, rename, config} = opts;
+  const defaultPkg = path.join(process.cwd(), 'package.json');
   const loadOpts = {
+    config: config || defaultPkg,
     pattern: pattern || [
       'gulp-*',
       'gulp.*',
@@ -29,25 +30,6 @@ export default function(opts = {}) {
       'gulp-if': 'gulpIf'
     }, rename)
   };
-  const defaultPkg = './package.json';
-  const packageFps = globSync(packages || defaultPkg);
 
-  if (!packageFps.includes(defaultPkg)) {
-    packageFps.unshift(defaultPkg);
-  }
-
-  return packageFps.reduce((acc, fp) => {
-    const config = path.resolve(fp);
-    const opts = Object.assign({}, loadOpts, {config});
-
-    try {
-      const plugins = load(opts);
-
-      Object.assign(acc, plugins);
-    } catch (err) {
-      console.error(`Couldn't find ${config}`);
-    }
-
-    return acc;
-  }, {});
+  return Object.assign({}, load(loadOpts));
 }

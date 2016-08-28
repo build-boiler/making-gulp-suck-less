@@ -4,17 +4,62 @@ import makeConfig from './make-config';
 import {TaskHandler} from '../../packages/gulpy-boiler-utils';
 
 export default class Webpack extends TaskHandler {
+  constructor(name, plugins, config) {
+    super(name, plugins, config);
+
+    const webpack = {
+      hot: true,
+      entry: {
+        js: 'index.js',
+        assets: 'assets.js'
+      },
+      alias: {
+        underscore: 'lodash',
+        'js-cookie': 'jquery.cookie'
+      },
+      define: {
+        BLEEP: JSON.stringify('bloop')
+      },
+      expose: {
+        'Cookie': 'js-cookie'
+      },
+      externals: {
+        jquery: 'jQuery'
+      },
+      provide: {
+        'global.jQuery': 'jquery',
+        'window.jQuery': 'jquery',
+        '$': 'jquery'
+      }
+    };
+    const sources = {
+      jsBundle: 'main',
+      cssBundle: 'main',
+      hotPort: 8080
+    };
+
+    this.configure({webpack, sources});
+  }
+
   task(gulp, plugins, config) {
-    const {metaData, sources, utils, environment, tasks} = config;
-    const {webpack: taskConfig} = tasks;
-    const {hot = true} = taskConfig;
+    const {
+      metaData,
+      sources,
+      utils,
+      environment,
+      webpack: taskConfig
+    } = config;
+    const {hot} = taskConfig;
     const {isDev, assetPath} = environment;
     const {getTarget} = utils;
-    const {buildDir, devPath: devHost, devPort, hotPort, bundler} = sources;
     const {
-      jsBundle = 'main',
-        cssBundle = 'main'
-    } = bundler;
+      jsBundle,
+      cssBundle,
+      buildDir,
+      devPath: devHost,
+      devPort,
+      hotPort
+    } = sources;
     const {gutil} = plugins;
     const {log, colors} = gutil;
     const {magenta, blue} = colors;
@@ -52,7 +97,7 @@ export default class Webpack extends TaskHandler {
         }
 
         if (!isDev) {
-          //log(stats.toString());
+          log(stats.toString());
         }
       }
 

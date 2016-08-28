@@ -14,7 +14,6 @@ export default function({env, sources}) {
     srcDir: 'src',
     buildDir: 'dist',
     devPort: 8000,
-    hotPort: 8080,
     devPath: [protocol, '://', devPath].join(''),
     protocol
   }, sources);

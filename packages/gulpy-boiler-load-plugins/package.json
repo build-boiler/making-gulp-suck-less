@@ -20,7 +20,6 @@
     "gulp"
   ],
   "dependencies": {
-    "globby": "^6.0.0",
     "gulp-load-plugins": "^1.2.4"
   }
 }

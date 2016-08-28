@@ -20,5 +20,8 @@
     "eslint",
     "gulp"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "gulpy-boiler-load-plugins": "1.0.0",
+    "merge-deep": "^3.0.0"
+  }
 }

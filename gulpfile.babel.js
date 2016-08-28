@@ -9,52 +9,14 @@ const babel = new Babel();
 
 try {
   const bootstrap = require('./packages/gulpy-boiler-core/src');
-  const webpack = {
-    entry: {
-      js: 'index.js',
-      assets: 'assets.js'
-    },
-    alias: {
-      underscore: 'lodash',
-      'js-cookie': 'jquery.cookie'
-    },
-    define: {
-      BLEEP: JSON.stringify('bloop')
-    },
-    expose: {
-      'Cookie': 'js-cookie'
-    },
-    externals: {
-      jquery: 'jQuery'
-    },
-    provide: {
-      'global.jQuery': 'jquery',
-      'window.jQuery': 'jquery',
-      '$': 'jquery'
-    }
-  };
   const opts = {
     plugins: {
-      packages: ['./package.json', './packages/*/package.json']
+      //config,
       //rename,
       //lazy,
       //patterns
     },
     config: {
-      sources: {
-        templating: {
-          dir: 'templates',
-          layouts: 'layouts',
-          pages: 'pages'
-        },
-        bundler: {
-          jsBundle: 'main',
-          cssBundle: 'main'
-        }
-      },
-      tasks: {
-        webpack
-      }
       //env,
       //sources,
       //tasks,
@@ -62,11 +24,9 @@ try {
     },
     dirs: {
       tasks: [
-        path.resolve('./tasks'),
-        path.resolve('./packages/gulpy-boiler-task-eslint')
+        'tasks',
+        'gulpy-boiler-task-eslint'
       ]
-      //lazy,
-      //tasks,
     },
     wrapper: {
       //args

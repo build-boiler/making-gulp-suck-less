@@ -11,6 +11,13 @@ import formatter from 'eslint-friendly-formatter';
  * @return {Function} to be registered with gulp task
  */
 export default class Eslint extends TaskHandler {
+  constructor(name, plugins, config) {
+    super(name, plugins, config);
+
+    this.loadPlugins({
+      config: path.resolve(__dirname, '..', 'package.json')
+    });
+  }
   task(gulp, plugins, config) {
     const {environment, utils, metaData} = config;
     const {eslint} = plugins;

@@ -8,8 +8,7 @@ import kind from 'kind-of';
  */
 export default function(config) {
   const {sources, utils} = config;
-  const {srcDir, templating} = sources;
-  const {dir: templateDir} = templating;
+  const {srcDir, templateDir} = sources;
   const {addbase} = utils;
 
   function makeTemplatePath(dir) {

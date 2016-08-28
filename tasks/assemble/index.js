@@ -10,24 +10,34 @@ import frontMatterMiddleware from './front-matter';
 import {TaskHandler} from '../../packages/gulpy-boiler-utils';
 
 export default class Webpack extends TaskHandler {
+  constructor(name, plugins, config) {
+    super(name, plugins, config);
+
+    const assemble = {};
+    const sources = {
+      templateDir: 'templates',
+      layouts: 'layouts',
+      pages: 'pages'
+    };
+
+    this.configure({assemble, sources});
+  }
   task(gulp, plugins, config) {
     const app = assemble();
     const {browserSync, gutil, gulpIf} = plugins;
     const {log, colors} = gutil;
     const {
+      assemble: taskConfig = {},
       sources,
       utils,
-      environment,
-      tasks
+      environment
     } = config;
-    const {assemble: taskConfig = {}} = tasks;
     const {data} = taskConfig;
     const {
       srcDir,
       buildDir,
-      templating
+      templateDir
     } = sources;
-    const {dir: templateDir} = templating;
     const {blue, magenta} = colors;
     const logger = (prefix, message) => log(magenta(`[assemble: ${magenta(prefix)}] `) +  blue(message));
     const {addbase} = utils;

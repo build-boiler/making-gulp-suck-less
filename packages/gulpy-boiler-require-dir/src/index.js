@@ -23,36 +23,19 @@ function removeExt(fp) {
 }
 
 /**
- * Check if the Function is a class or plain Funtion
- * @param {Function|Class} fn
- * @return {Boolean}
- */
-function isConsumableFn(fn) {
-  return !/class/.test(fn.toString()) && fn.length >= 3;
-}
-
-/**
  * Require or cache the file
  * @param {Object} tasks accumulated tasks
  * @param {String} name the task name
  * @param {String} fp filepath
- * @param {Object} opts options
  * @return {Object} camelCase name key and file/lazy file value
  */
-function requireFile(name, fp, opts, tasks) {
+function requireFile(name, fp, tasks) {
   name = camelCase(name);
 
   if (tasks[name]) return {}; //don't overwrite parent tasks
 
-  const {lazy = true} = opts;
-  const wrapped = (target) => {
-    const Fn = require(fp);
-
-    return isConsumableFn(Fn) ? Fn : new Fn(target);
-  };
-
   return {
-    [ camelCase(name) ]: lazy ? wrapped : wrapped()
+    [ camelCase(name) ]: () => require(fp)
   };
 }
 
@@ -61,11 +44,10 @@ function requireFile(name, fp, opts, tasks) {
  * values corresponding to the callback function passed as the second
  * argument to `gulp.task`
  * @param {String} basePath path to directory
- * @param {Object} opts options
  * @param {Object} tasks accumulated tasks
  * @return {Object} map of task names to callback functions to be used in `gulp.task`
  */
-function recurseTasks(basePath, opts, tasks = {}) {
+function recurseTasks(basePath, tasks = {}) {
   let dirs;
 
   try {
@@ -76,7 +58,7 @@ function recurseTasks(basePath, opts, tasks = {}) {
     const {main} = require(pkgPath);
     const name = removeExt(main);
 
-    return requireFile(name, basePath, opts, tasks);
+    return requireFile(name, basePath, tasks);
   } catch (err) {
     dirs = readdirSync(basePath);
   }
@@ -104,10 +86,40 @@ function recurseTasks(basePath, opts, tasks = {}) {
 
     return {
       ...acc,
-      ...requireFile(taskName, taskPath, opts, tasks)
+      ...requireFile(taskName, taskPath, tasks)
     };
   }, {});
 }
+
+/**
+ * Use `require.resolve` to determine if the task String is a module
+ * @param {String} fp
+ * @return {String} directory of base tasks of tasks in node modules
+ */
+const resolveTaskPath = (() => {
+  const base = path.resolve(__dirname, '..', '..');
+  const cwd = process.cwd();
+  const fullPath = (basePath, fp) => {
+    return path.join(
+      basePath,
+      fp.replace(process.cwd(), '')
+    );
+  };
+
+  return function resolveTaskPath(fp) {
+    let taskDir;
+
+    try {
+      taskDir = path.dirname(
+        require.resolve(fullPath(base, fp))
+      );
+    } catch (err) {
+      taskDir = fullPath(cwd, fp);
+    }
+
+    return taskDir;
+  };
+})();
 
 /**
  * Recursively require all files in a specified `tasks` directory
@@ -121,13 +133,14 @@ export default function(opts = {}) {
 
   if (Array.isArray(base)) {
     tasks = base
+      .map(resolveTaskPath)
       .sort((a, b) => a.length - b.length)
       .reduce((acc, fp) => ({
         ...acc,
-        ...recurseTasks(fp, opts, acc)
+        ...recurseTasks(fp, acc)
       }), {});
   } else {
-    tasks = recurseTasks(base, opts);
+    tasks = recurseTasks(base);
   }
 
   return tasks;
