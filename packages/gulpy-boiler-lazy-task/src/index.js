@@ -27,14 +27,15 @@ export default function(tasks = {}, gulp, plugins, config, opts = {}) {
     args = Array.isArray(args) ? args : [args];
 
     acc[taskName] = function(cb) {
+      const metaData = gulp.metaData || this.metaData;
+      const {name: target} = metaData;
       //lazy load task that has `require` wrapped in a function
-      const taskFn = isInstance(taskGetter) || isConsumableFn(taskGetter) ? taskGetter : taskGetter();
+      const taskFn = isInstance(taskGetter) || isConsumableFn(taskGetter) ? taskGetter : taskGetter(target);
 
       /**
        * In Gulp3 the `metaData` is put on the Gulp instance and in Gulp4
        * it is bound as the context of the task funtion
        */
-      const metaData = gulp.metaData || this.metaData;
       let gulpFn;
 
       if (isInstance(taskFn)) {

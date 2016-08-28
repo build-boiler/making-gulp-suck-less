@@ -1,4 +1,3 @@
-import EventEmitter from 'events';
 import path from 'path';
 import assemble from 'assemble-core';
 import merge from 'merge-deep';
@@ -8,8 +7,9 @@ import {map as asyncMap} from 'async';
 import renameKey from './rename-key';
 import templateNunjucks from './nunjucks';
 import frontMatterMiddleware from './front-matter';
+import {TaskHandler} from '../../packages/gulpy-boiler-utils';
 
-export default class Webpack extends EventEmitter {
+export default class Webpack extends TaskHandler {
   task(gulp, plugins, config) {
     const app = assemble();
     const {browserSync, gutil, gulpIf} = plugins;

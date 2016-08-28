@@ -1,9 +1,9 @@
-import EventEmitter from 'events';
 import kind from 'kind-of';
 import webpack from 'webpack';
 import makeConfig from './make-config';
+import {TaskHandler} from '../../packages/gulpy-boiler-utils';
 
-export default class Webpack extends EventEmitter {
+export default class Webpack extends TaskHandler {
   task(gulp, plugins, config) {
     const {metaData, sources, utils, environment, tasks} = config;
     const {webpack: taskConfig} = tasks;

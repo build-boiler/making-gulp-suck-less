@@ -1,5 +1,5 @@
 import path from 'path';
-import EventEmitter from 'events';
+import {TaskHandler} from 'gulpy-boiler-utils';
 import makeEslintConfig from 'boiler-config-eslint';
 import formatter from 'eslint-friendly-formatter';
 
@@ -10,7 +10,7 @@ import formatter from 'eslint-friendly-formatter';
  * @param {Object} config configuration utilities
  * @return {Function} to be registered with gulp task
  */
-export default class Eslint extends EventEmitter {
+export default class Eslint extends TaskHandler {
   task(gulp, plugins, config) {
     const {environment, utils, metaData} = config;
     const {eslint} = plugins;
@@ -47,6 +47,10 @@ export default class Eslint extends EventEmitter {
         isDev,
         lintEnv: target
       });
+
+      this.emit('change', eslintConfig);
+
+      console.log('****AFTER EMIT***', eslintConfig.bleep);
 
       return gulp.src(src)
       .pipe(eslint(eslintConfig))

@@ -1,8 +1,8 @@
 import path from 'path';
 import through from 'through2';
-import EventEmitter from 'events';
+import {TaskHandler} from '../packages/gulpy-boiler-utils';
 
-export default class Babel extends EventEmitter {
+export default class Babel extends TaskHandler {
   task(gulp, plugins, config) {
     const {
       babel,
