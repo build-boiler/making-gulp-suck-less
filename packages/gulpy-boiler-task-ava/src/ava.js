@@ -20,22 +20,26 @@ export default class Ava extends TaskHandler {
       options: [
         '-f, --file specify a single file',
         '-d, --debug run with iron-node',
-        '-vb, --verbose run in verbose mode'
+        '-vb, --verbose run in verbose mode',
+        '-w, --watch test files'
       ],
       alias: {
         d: 'debug',
         f: 'file',
-        vb: 'verbose'
+        vb: 'verbose',
+        w: 'watch'
       },
       examples: '--file bleep-spec'
     });
-    const {debug} = flags;
+    const {debug, watch} = flags;
     const ava = {
       debug,
       serial: debug,
       require: path.resolve(__dirname, '.', 'babel-hook.js'),
-      verbose: flags.verbose || !isCi
+      verbose: flags.verbose || !isCi,
+      watch
     };
+    console.log('********', ava);
 
     this.configure({
       ava,
