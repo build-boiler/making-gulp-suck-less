@@ -1,14 +1,14 @@
 {
-  "name": "gulpy-boiler-utils",
+  "name": "gulpy-boiler-task-ava",
   "version": "1.0.0",
   "description": "Gulp suck-less boilerplate eslint task",
-  "main": "dist/index.js",
+  "main": "dist/ava.js",
   "author": "DtotheFP",
   "license": "Copyright 2016",
   "homepage": "https://github.com/build-boiler/making-gulp-suck-less",
   "repository": {
     "type": "git",
-    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulpy-boiler-utils"
+    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulpy-boiler-task-ava"
   },
   "bugs": {
     "url": "https://github.com/build-boiler/making-gulp-suck-less/issues"
@@ -21,8 +21,14 @@
     "gulp"
   ],
   "dependencies": {
-    "gulpy-boiler-load-plugins": "1.0.0",
-    "meow": "^3.7.0",
-    "merge-deep": "^3.0.0"
+    "babel-plugin-rewire": "^1.0.0-rc-7",
+    "dargs": "^5.0.1",
+    "gulp-util": "^3.0.7",
+    "gulpy-boiler-utils": "1.0.0",
+    "resolve-cwd": "^1.0.0",
+    "through2": "^2.0.1"
+  },
+  "peerDependencies": {
+    "ava": "^0.16.0"
   }
 }

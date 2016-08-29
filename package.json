@@ -21,6 +21,7 @@
     "assemble-core": "^0.26.0",
     "assemble-loader": "^0.6.1",
     "async": "^2.0.1",
+    "ava": "^0.16.0",
     "babel-eslint": "^5.0.0",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-object-rest-spread": "^6.8.0",

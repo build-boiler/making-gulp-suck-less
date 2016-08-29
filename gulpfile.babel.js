@@ -3,9 +3,7 @@ import path from 'path';
 import gulp from 'gulp';
 import load from 'gulp-load-plugins';
 import {sync as globSync} from 'globby';
-import Babel from './tasks/babel';
-
-const babel = new Babel();
+import babel from './tasks/babel';
 
 try {
   const bootstrap = require('./packages/gulpy-boiler-core/src');
@@ -25,24 +23,26 @@ try {
     dirs: {
       tasks: [
         'tasks',
-        'gulpy-boiler-task-eslint'
+        'packages/gulpy-boiler-task-ava'
       ]
     },
     wrapper: {
       //args
     }
   };
+
   const {tasks, plugins, config} = bootstrap(gulp, opts);
   const {utils} = config;
   const {addbase} = utils;
 
+  gulp.task('ava', tasks.ava);
   gulp.task('lint:test', tasks.eslint);
   gulp.task('lint:build', tasks.eslint);
   gulp.task('lint', gulp.parallel('lint:test', 'lint:build'));
   gulp.task('webpack:js', tasks.webpack);
   gulp.task('webpack:css', tasks.webpack);
   gulp.task('webpack', gulp.parallel('webpack:js', 'webpack:css'));
-  gulp.task('babel', babel.task(gulp, plugins, config));
+  gulp.task('babel', babel(gulp, plugins, config));
   gulp.task('assemble', tasks.assemble);
 
   const baseTasks = gulp.series('lint', 'babel');
@@ -131,5 +131,5 @@ try {
 
   const config = {environment, sources, utils};
 
-  gulp.task('babel', babel.task(gulp, plugins, config));
+  gulp.task('babel', babel(gulp, plugins, config));
 }
