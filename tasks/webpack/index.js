@@ -21,7 +21,7 @@ export default class Webpack extends TaskHandler {
         BLEEP: JSON.stringify('bloop')
       },
       expose: {
-        'Cookie': 'js-cookie'
+        'js-cookie': 'Cookie'
       },
       externals: {
         jquery: 'jQuery'
