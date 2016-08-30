@@ -48,6 +48,7 @@ export default function(opts = {}) {
       }
     }
 
+    debugger;
     const runner = debug ? 'iron-node' : process.execPath;
     const cp = childProcess.spawn(runner, args, {cwd, stdio: 'inherit'});
 

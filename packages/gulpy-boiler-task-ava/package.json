@@ -26,8 +26,5 @@
     "gulp-util": "^3.0.7",
     "gulpy-boiler-utils": "1.0.0",
     "through2": "^2.0.1"
-  },
-  "peerDependencies": {
-    "ava": "^0.16.0"
   }
 }

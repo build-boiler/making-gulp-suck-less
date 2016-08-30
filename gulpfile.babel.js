@@ -6,6 +6,7 @@ import {sync as globSync} from 'globby';
 import babel from './tasks/babel';
 
 const {TRAVIS_BRANCH} = process.env;
+const isCi = !!TRAVIS_BRANCH;
 
 try {
   const bootstrap = require('./packages/gulpy-boiler-core/src');
@@ -18,7 +19,7 @@ try {
     },
     config: {
       environment: {
-        isCi: !!TRAVIS_BRANCH
+        isCi
       }
       //sources,
       //tasks,
@@ -68,7 +69,9 @@ try {
   gulp.task('watch', gulp.series('build', 'watch:build'));
   gulp.task('default', gulp.series('babel'));
 } catch (err) {
-  console.log('**FALLING BACK TO DEFAULT BUILD', err.message, err.stack);
+  if (!isCi) {
+    console.log('**FALLING BACK TO DEFAULT BUILD', err.message, err.stack);
+  }
 
   const loadOpts = {
     pattern: [
