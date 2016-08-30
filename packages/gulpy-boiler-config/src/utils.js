@@ -3,11 +3,10 @@ import merge from 'merge-deep';
 
 /**
  * Make the utils
- * @param {String} env enviroment i.e  "development" or "production"
  * @param {Object} utils mixin
  * @return {Object}
  */
-export default function({env, utils}) {
+export default function({utils}) {
   const cwd = process.cwd();
   const rootDir = path.resolve(__dirname, '..', '..');
 

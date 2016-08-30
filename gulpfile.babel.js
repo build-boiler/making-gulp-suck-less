@@ -5,6 +5,8 @@ import load from 'gulp-load-plugins';
 import {sync as globSync} from 'globby';
 import babel from './tasks/babel';
 
+const {TRAVIS_BRANCH} = process.env;
+
 try {
   const bootstrap = require('./packages/gulpy-boiler-core/src');
   const opts = {
@@ -15,7 +17,9 @@ try {
       //patterns
     },
     config: {
-      //env,
+      environment: {
+        isCi: !!TRAVIS_BRANCH
+      }
       //sources,
       //tasks,
       //utils

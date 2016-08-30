@@ -15,7 +15,9 @@ install:
 - npm i -g npm@latest
 - npm i
 script:
+- npm run lerna:bootstrap
 - npm start
+- npm test
 cache:
   directories:
   - node_modules

@@ -11,14 +11,15 @@ import makeUtils from './utils';
  * @return {Object} config Object with `sources`, `environment`, and `utils` keys
  */
 export default function(opts = {}) {
-  const {NODE_ENV} = process.env;
-  const {sources = {}, utils = {}} = opts;
-  const defaultEnv = process.argv.includes('watch') ? 'development' : 'production';
-  const env = opts.env || NODE_ENV || defaultEnv;
+  const {
+    environment = {},
+    sources = {},
+    utils = {}
+  } = opts;
 
   return {
-    environment: makeEnv({env}),
-    sources: makeConfig({env, sources}),
-    utils: makeUtils({env, utils})
+    environment: makeEnv({environment}),
+    sources: makeConfig({sources}),
+    utils: makeUtils({utils})
   };
 }

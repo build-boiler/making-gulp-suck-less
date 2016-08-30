@@ -2,11 +2,10 @@ import merge from 'merge-deep';
 
 /**
  * Make the config
- * @param {String} env enviroment i.e  "development" or "production"
  * @param {Object} sources mixin
  * @return {Object}
  */
-export default function({env, sources}) {
+export default function({sources}) {
   const protocol = sources.protocol || 'http';
   const devPath = sources.devPath || 'localhost';
 

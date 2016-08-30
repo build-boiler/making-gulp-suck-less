@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "gulp build",
-    "test": "gulp mocha",
+    "start": "gulp babel && gulp build",
+    "test": "gulp ava",
     "lerna:bootstrap": "lerna bootstrap",
     "lerna:init": "lerna init",
     "lerna:publish": "lerna publish",
