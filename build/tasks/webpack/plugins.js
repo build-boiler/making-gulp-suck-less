@@ -33,7 +33,7 @@ export default function(config, opts) {
   };
   const {DefinePlugin, NoErrorsPlugin, ProvidePlugin, optimize} = webpack;
   const {OccurenceOrderPlugin, OccurrenceOrderPlugin, DedupePlugin, UglifyJsPlugin} = optimize;
-  //prepare for Webpack 2
+  // prepare for Webpack 2
   const PluginFn = OccurenceOrderPlugin || OccurrenceOrderPlugin;
   const plugins = [
     new PluginFn(),
@@ -56,7 +56,7 @@ export default function(config, opts) {
             filename: cssFileName,
             allChunks: true
           }),
-          new DedupePlugin(), //breaking in Webpack 2 with CommonChuncks https://github.com/webpack/webpack/issues/2764
+          new DedupePlugin(), // breaking in Webpack 2 with CommonChuncks https://github.com/webpack/webpack/issues/2764
           new UglifyJsPlugin({
             output: {
               comments: false

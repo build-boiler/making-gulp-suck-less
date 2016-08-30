@@ -7,7 +7,7 @@ import {map as asyncMap} from 'async';
 import renameKey from './rename-key';
 import templateNunjucks from './nunjucks';
 import frontMatterMiddleware from './front-matter';
-import {TaskHandler} from '../../packages/gulpy-boiler-utils';
+import {TaskHandler} from '../../../packages/gulpy-boiler-utils';
 
 export default class Webpack extends TaskHandler {
   constructor(name, plugins, config) {
@@ -39,7 +39,7 @@ export default class Webpack extends TaskHandler {
       templateDir
     } = sources;
     const {blue, magenta} = colors;
-    const logger = (prefix, message) => log(magenta(`[assemble: ${magenta(prefix)}] `) +  blue(message));
+    const logger = (prefix, message) => log(magenta(`[assemble: ${magenta(prefix)}] `) + blue(message));
     const {addbase} = utils;
     const {isDev} = environment;
     const templatePath = addbase(srcDir, templateDir);
@@ -53,7 +53,7 @@ export default class Webpack extends TaskHandler {
         asyncMap(fps, readJson, (err, results) => {
           if (err) return rej(err);
 
-          const [main, global, ...integrityData] = results;
+          const [main, global, ...integrityData] = results.reverse();
           const {assets: images, ...rest} = global;
           const integrity = integrityData.reduce((acc, json) => Object.assign(acc, json), {});
           const custom = {
@@ -87,7 +87,7 @@ export default class Webpack extends TaskHandler {
             .pipe(app.renderFile())
             .pipe(app.dest(buildDir))
             .on('data', (file) => {
-              logger('render',  renameKey(file.path));
+              logger('render', renameKey(file.path));
             })
             .pipe(
               gulpIf(isDev, browserSync.stream())

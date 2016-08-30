@@ -15,7 +15,7 @@ export default class TaskHandler extends EventEmitter {
     const data = cli(opts);
     const {flags} = data;
     const cliData = Object.keys(flags).reduce((acc, key) => {
-      let aliasVal = opts.alias && opts.alias[key];
+      const aliasVal = opts.alias && opts.alias[key];
 
       if (aliasVal) {
         Object.assign(acc.flags, {

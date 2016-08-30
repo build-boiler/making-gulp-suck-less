@@ -29,7 +29,6 @@ const plugins = {};
 
 test('should configure ava task', t => {
   const task = new AvaTask(name, plugins, config);
-  const expectedSources = ['ava', 'sources', 'environment', 'utils'];
   const {ava, sources} = task.config;
 
   t.truthy(ava.verbose);

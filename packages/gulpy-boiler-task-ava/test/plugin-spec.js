@@ -49,7 +49,8 @@ test.cb('should spawn the process with the node binary', t => {
   t.end();
 });
 
-//not sure why even though we are mocking the child_process.spawn it is still opening iron-node ¯\_(ツ)_/¯
+// not sure why even though we are mocking the child_process.spawn
+// it is still opening iron-node ¯\_(ツ)_/¯
 test.cb.skip('should spawn the process with iron-node in debug mode', t => {
   const stream = plugin({debug: true});
   const writeMock = base('mocks/bleep.js');

@@ -1,6 +1,5 @@
 import path from 'path';
 import formatter from 'eslint-friendly-formatter';
-import makeEslintConfig from 'boiler-config-eslint';
 import getLoaders from './loaders';
 import getPlugins from './plugins';
 import getTools from './isomorphic-tools';
@@ -65,13 +64,7 @@ export default function(config, opts) {
         'reload=true'
       ];
       const hotEntry = hot && isDev ? [`webpack-hot-middleware/client?${hmrOpts.join('&')}`] : [];
-      const eslintConfig = {
-        isDev,
-        lintEnv: 'web',
-        basic: false,
-        react: true
-      };
-      const {rules, configFile} = makeEslintConfig(eslintConfig);
+      const configFile = require.resolve('../../../packages/eslint-config-gulpy-boiler');
 
       bundleName = isDev ? '[name].js' : '[name]-[chunkhash].js';
 
@@ -92,7 +85,6 @@ export default function(config, opts) {
         },
         devtool: 'source-map',
         eslint: {
-          rules,
           configFile,
           formatter,
           emitError: false,
@@ -135,7 +127,7 @@ export default function(config, opts) {
         target: 'node'
       });
       break;
-  } //end `switch`
+  } // end `switch`
 
   return webpackConfig;
 }

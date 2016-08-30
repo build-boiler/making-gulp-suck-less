@@ -1,14 +1,14 @@
 {
-  "name": "gulpy-boiler-task-eslint",
+  "name": "eslint-config-gulpy-boiler",
   "version": "1.0.0",
-  "description": "Gulp suck-less boilerplate eslint task",
-  "main": "dist/eslint.js",
+  "description": "Gulp suck-less boilerplate utility for lazy loading tasks and passing config",
+  "main": "dist/index.js",
   "author": "DtotheFP",
   "license": "Copyright 2016",
   "homepage": "https://github.com/build-boiler/making-gulp-suck-less",
   "repository": {
     "type": "git",
-    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/gulpy-boiler-task-eslint"
+    "url": "git://github.com/build-boiler/making-gulp-suck-less/packages/eslint-config-gulpy-boiler"
   },
   "bugs": {
     "url": "https://github.com/build-boiler/making-gulp-suck-less/issues"
@@ -17,23 +17,26 @@
     "node": ">=6.0.0"
   },
   "keywords": [
-    "eslint",
     "gulp"
   ],
+  "scripts": {
+    "lint": "eslint src/**"
+  },
   "dependencies": {
     "babel-eslint": "^6.1.2",
-    "babel-plugin-transform-runtime": "^6.8.0",
     "eslint": "^3.4.0",
-    "eslint-config-gulpy-boiler": "^1.0.0",
-    "eslint-friendly-formatter": "^2.0.6",
+    "eslint-config-airbnb": "^10.0.1",
+    "eslint-config-airbnb-base": "^5.0.3",
+    "eslint-config-babel": "^1.0.1",
     "eslint-plugin-ava": "^3.0.0",
     "eslint-plugin-babel": "^3.3.0",
     "eslint-plugin-flow-vars": "^0.5.0",
     "eslint-plugin-import": "^1.13.0",
     "eslint-plugin-jsx-a11y": "^2.1.0",
     "eslint-plugin-react": "^6.1.2",
-    "gulp-eslint": "^3.0.1",
-    "gulp-if": "^2.0.1",
-    "gulpy-boiler-utils": "1.0.0"
+    "lodash": "^4.15.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-ava": "^3.0.0"
   }
 }

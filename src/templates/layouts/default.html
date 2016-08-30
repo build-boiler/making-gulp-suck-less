@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>{{title}}</title>
+  {% get_asset type="css",integrity=true %}
 </head>
 <body>
   {% block main %}{% endblock %}
+  {% get_asset type="js",integrity=true %}
 </body>
 </html>

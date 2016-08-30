@@ -1,6 +1,7 @@
 import nunjucks from 'nunjucks';
 import cons from 'consolidate';
 import getTemplateFns from './template-fns';
+import * as tags from './tags';
 
 /**
  * Make some nunjucks
@@ -24,6 +25,12 @@ export default function(app, config) {
    */
   Object.keys(templateFns).forEach(name => {
     nunj.addGlobal(name, templateFns[name]);
+  });
+
+  Object.keys(tags).forEach(name => {
+    const Tag = tags[name];
+
+    nunj.addExtension(name, new Tag());
   });
 
   return nunj;

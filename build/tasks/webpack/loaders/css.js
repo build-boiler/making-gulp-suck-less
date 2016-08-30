@@ -31,7 +31,7 @@ export default function(config, opts) {
   }
 
   if (target === 'node') {
-    //todo add isomorphic asset replacement
+    // todo add isomorphic asset replacement
   } else if (isDev) {
     switch (target) {
       case 'js':
