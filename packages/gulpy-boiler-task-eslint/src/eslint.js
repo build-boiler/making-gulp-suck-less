@@ -14,39 +14,45 @@ export default class Eslint extends TaskHandler {
   constructor(name, plugins, config) {
     super(name, plugins, config);
 
+    const {environment, utils} = config;
+    const {isLocalDev} = environment;
+    const {addbase, getTarget} = utils;
+    const target = getTarget({name});
+    const rootDir = path.resolve(__dirname, '..', '..', '*');
+    let src, base;
+
+    if (target === 'test') {
+      base = path.join(rootDir, 'test/**/*.js');
+      src = [addbase('test', '**/*.js')];
+    } else if (target === 'build') {
+      base = path.join(rootDir, 'src/**/*.js');
+      src = [
+        addbase('tasks', '**/*.js'),
+        addbase('gulpfile.babel.js')
+      ];
+    }
+
+    /**
+     * Lint internal files if developing locally with Lerna
+     */
+    if (isLocalDev) {
+      src.push(base);
+    }
+
+    const sources = {src, base, target};
+
+    this.configure({sources});
     this.loadPlugins({
       config: path.resolve(__dirname, '..', 'package.json')
     });
   }
   task(gulp, plugins, config) {
-    const {environment, utils, metaData} = config;
+    const {environment, sources} = config;
+    const {src, target} = sources;
     const {eslint} = plugins;
-    const {isDev, isLocalDev} = environment;
-    const {addbase, getTarget} = utils;
-    let src, base;
+    const {isDev} = environment;
 
     return () => {
-      const target = getTarget(metaData);
-      const rootDir = path.resolve(__dirname, '..', '..', '*');
-
-      if (target === 'test') {
-        base = path.join(rootDir, 'test/**/*.js');
-        src = [addbase('test', '**/*.js')];
-      } else if (target === 'build') {
-        base = path.join(rootDir, 'src/**/*.js');
-        src = [
-          addbase('tasks', '**/*.js'),
-          addbase('gulpfile.babel.js')
-        ];
-      }
-
-      /**
-       * Lint internal files if developing locally with Lerna
-       */
-      if (isLocalDev) {
-        src.push(base);
-      }
-
       const eslintConfig = makeEslintConfig({
         basic: false,
         react: false,
@@ -57,11 +63,9 @@ export default class Eslint extends TaskHandler {
 
       this.emit('change', eslintConfig);
 
-      console.log('****AFTER EMIT***', eslintConfig.bleep);
-
       return gulp.src(src)
-      .pipe(eslint(eslintConfig))
-      .pipe(eslint.format(formatter));
+        .pipe(eslint(eslintConfig))
+        .pipe(eslint.format(formatter));
     };
   }
 }

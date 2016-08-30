@@ -23,7 +23,8 @@ try {
     dirs: {
       tasks: [
         'tasks',
-        'packages/gulpy-boiler-task-ava'
+        'packages/gulpy-boiler-task-ava',
+        'packages/gulpy-boiler-task-eslint'
       ]
     },
     wrapper: {
@@ -52,24 +53,16 @@ try {
       addbase('tasks/**/*.js'),
       addbase('packages/*/src/**/*.js'),
       addbase('gulpfile.babel.js')
-    ]).on('change', baseTasks);
+    ]).on('change', gulp.series('lint:build', 'babel'));
+
+    gulp.watch([
+      addbase('packages/*/test/**/*.js')
+    ]).on('change', gulp.series('lint:test'));
   });
 
   gulp.task('build', gulp.series(baseTasks, 'webpack', 'assemble'));
   gulp.task('watch', gulp.series('build', 'watch:build'));
   gulp.task('default', gulp.series('babel'));
-
-  const say = async (prom) => {
-    const message = await prom;
-
-    console.log(message);
-  };
-
-  gulp.task('async', () => {
-    return say(
-      Promise.resolve('**hello**')
-    );
-  });
 } catch (err) {
   console.log('**FALLING BACK TO DEFAULT BUILD', err.message, err.stack);
 

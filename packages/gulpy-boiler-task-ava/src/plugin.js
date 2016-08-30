@@ -6,8 +6,8 @@ import dargs from 'dargs';
 
 export default function(opts = {}) {
   const files = [];
-  const cwd = process.cwd();
   const {debug, ...options} = opts;
+  let cwd = process.cwd();
   let BIN;
 
   try {
@@ -15,7 +15,10 @@ export default function(opts = {}) {
       debug ? path.join(cwd, 'node_modules/ava/profile.js') : path.join(cwd, 'node_modules/ava/cli.js')
     );
   } catch (err) {
-    throw new Error('Please install `ava` in your `package.json`');
+    ([cwd] = cwd.split(/\/packages\//));
+    BIN = require.resolve(
+      debug ? path.join(cwd, 'node_modules/ava/profile.js') : path.join(cwd, 'node_modules/ava/cli.js')
+    );
   }
 
   return through.obj(function(file, enc, cb) {

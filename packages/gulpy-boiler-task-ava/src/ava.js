@@ -39,7 +39,6 @@ export default class Ava extends TaskHandler {
       verbose: flags.verbose || !isCi,
       watch
     };
-    console.log('********', ava);
 
     this.configure({
       ava,
