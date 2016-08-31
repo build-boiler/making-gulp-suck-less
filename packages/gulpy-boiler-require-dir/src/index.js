@@ -1,5 +1,5 @@
-import path from 'path';
-import {readdirSync, statSync} from 'fs';
+import path from 'path'
+import {readdirSync, statSync} from 'fs'
 
 /**
  * Camel case all the dash and hyphen things
@@ -7,7 +7,7 @@ import {readdirSync, statSync} from 'fs';
  * @return {String}
  */
 function camelCase(name) {
-  return name.replace(/[-_]([a-z])/g, (sep) => sep[1].toUpperCase());
+  return name.replace(/[-_]([a-z])/g, (sep) => sep[1].toUpperCase())
 }
 
 /**
@@ -19,7 +19,7 @@ function removeExt(fp) {
   return path.basename(
     fp,
     path.extname(fp)
-  );
+  )
 }
 
 /**
@@ -30,13 +30,13 @@ function removeExt(fp) {
  * @return {Object} camelCase name key and file/lazy file value
  */
 function requireFile(name, fp, tasks) {
-  name = camelCase(name);
+  name = camelCase(name)
 
-  if (tasks[name]) return {}; // don't overwrite parent tasks
+  if (tasks[name]) return {} // don't overwrite parent tasks
 
   return {
     [camelCase(name)]: () => require(fp)
-  };
+  }
 }
 
 /**
@@ -48,47 +48,47 @@ function requireFile(name, fp, tasks) {
  * @return {Object} map of task names to callback functions to be used in `gulp.task`
  */
 function recurseTasks(basePath, tasks = {}) {
-  let dirs;
+  let dirs
 
   try {
-    const pkgPath = path.join(basePath, 'package.json');
+    const pkgPath = path.join(basePath, 'package.json')
 
-    statSync(pkgPath);
+    statSync(pkgPath)
 
-    const {main} = require(pkgPath);
-    const name = removeExt(main);
+    const {main} = require(pkgPath)
+    const name = removeExt(main)
 
-    return requireFile(name, basePath, tasks);
+    return requireFile(name, basePath, tasks)
   } catch (err) {
-    dirs = readdirSync(basePath);
+    dirs = readdirSync(basePath)
   }
 
   return dirs.reduce((acc, name) => {
-    const taskPath = path.join(basePath, name);
-    const taskStat = statSync(taskPath);
-    let taskName, pkgStat;
+    const taskPath = path.join(basePath, name)
+    const taskStat = statSync(taskPath)
+    let taskName, pkgStat
 
     if (pkgStat && pkgStat.isFile()) {
-      taskName = name;
+      taskName = name
     } else if (taskStat.isDirectory()) {
       try {
         statSync(
           path.join(taskPath, 'index.js')
-        );
+        )
       } catch (err) {
-        throw new Error(`task ${name} directory must have filename index.js`);
+        throw new Error(`task ${name} directory must have filename index.js`)
       }
 
-      taskName = name;
+      taskName = name
     } else {
-      taskName = removeExt(name);
+      taskName = removeExt(name)
     }
 
     return {
       ...acc,
       ...requireFile(taskName, taskPath, tasks)
-    };
-  }, {});
+    }
+  }, {})
 }
 
 /**
@@ -97,29 +97,29 @@ function recurseTasks(basePath, tasks = {}) {
  * @return {String} directory of base tasks of tasks in node modules
  */
 const resolveTaskPath = (() => {
-  const base = path.resolve(__dirname, '..', '..');
-  const cwd = process.cwd();
+  const base = path.resolve(__dirname, '..', '..')
+  const cwd = process.cwd()
   const fullPath = (basePath, fp) => {
     return path.join(
       basePath,
       fp.replace(process.cwd(), '')
-    );
-  };
+    )
+  }
 
   return function resolver(fp) {
-    let taskDir;
+    let taskDir
 
     try {
       taskDir = path.dirname(
         require.resolve(fullPath(base, fp))
-      );
+      )
     } catch (err) {
-      taskDir = fullPath(cwd, fp);
+      taskDir = fullPath(cwd, fp)
     }
 
-    return taskDir;
-  };
-})();
+    return taskDir
+  }
+})()
 
 /**
  * Recursively require all files in a specified `tasks` directory
@@ -128,8 +128,8 @@ const resolveTaskPath = (() => {
  * @return {Object} `require`d files by camelCased keys
  */
 export default function(opts = {}) {
-  const base = opts.tasks || path.join(process.cwd(), 'tasks');
-  let tasks;
+  const base = opts.tasks || path.join(process.cwd(), 'tasks')
+  let tasks
 
   if (Array.isArray(base)) {
     tasks = base
@@ -138,10 +138,10 @@ export default function(opts = {}) {
       .reduce((acc, fp) => ({
         ...acc,
         ...recurseTasks(fp, acc)
-      }), {});
+      }), {})
   } else {
-    tasks = recurseTasks(base);
+    tasks = recurseTasks(base)
   }
 
-  return tasks;
+  return tasks
 }

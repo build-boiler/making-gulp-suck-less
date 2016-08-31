@@ -8,6 +8,7 @@ export default {
     code: 120,
     ignoreUrls: true
   }],
+  semi: ['warn', 'always'],
   'default-case': 0,
   'func-names': 0,
   'no-case-declarations': 0,
@@ -32,4 +33,4 @@ export default {
   'comma-dangle': 0,
   'global-require': 0,
   'object-curly-spacing': 0
-};
+}

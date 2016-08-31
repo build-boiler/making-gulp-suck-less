@@ -1,5 +1,5 @@
-import path from 'path';
-import kind from 'kind-of';
+import path from 'path'
+import kind from 'kind-of'
 
 /**
  * Function to be added to the `assemble` template context
@@ -7,19 +7,19 @@ import kind from 'kind-of';
  * @return {Object} functions to be added to template context
  */
 export default function(config) {
-  const {sources, utils} = config;
-  const {srcDir, templateDir} = sources;
-  const {addbase} = utils;
+  const {sources, utils} = config
+  const {srcDir, templateDir} = sources
+  const {addbase} = utils
 
   function makeTemplatePath(dir) {
-    return (fp) => `${addbase(srcDir, templateDir, dir, fp)}.html`;
+    return (fp) => `${addbase(srcDir, templateDir, dir, fp)}.html`
   }
 
   function join(...args) {
     // allow Number in filepath, must convert to String or `path.join` yells
-    const normalizedArgs = args.map(arg => kind(arg) === 'number' ? `${arg}` : arg);
+    const normalizedArgs = args.map(arg => kind(arg) === 'number' ? `${arg}` : arg)
 
-    return path.join(...normalizedArgs);
+    return path.join(...normalizedArgs)
   }
 
   return {
@@ -27,5 +27,5 @@ export default function(config) {
     layouts: makeTemplatePath('layouts'),
     macros: makeTemplatePath('macros'),
     partials: makeTemplatePath('partials')
-  };
+  }
 }

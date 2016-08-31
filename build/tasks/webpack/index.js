@@ -1,11 +1,11 @@
-import kind from 'kind-of';
-import webpack from 'webpack';
-import makeConfig from './make-config';
-import {TaskHandler} from '../../../packages/gulpy-boiler-utils';
+import kind from 'kind-of'
+import webpack from 'webpack'
+import makeConfig from './make-config'
+import {TaskHandler} from '../../../packages/gulpy-boiler-utils'
 
 export default class Webpack extends TaskHandler {
   constructor(name, plugins, config) {
-    super(name, plugins, config);
+    super(name, plugins, config)
 
     const webpack = {
       hot: true,
@@ -31,14 +31,14 @@ export default class Webpack extends TaskHandler {
         'window.jQuery': 'jquery',
         $: 'jquery'
       }
-    };
+    }
     const sources = {
       jsBundle: 'main',
       cssBundle: 'main',
       hotPort: 8080
-    };
+    }
 
-    this.configure({webpack, sources});
+    this.configure({webpack, sources})
   }
 
   task(gulp, plugins, config) {
@@ -48,10 +48,10 @@ export default class Webpack extends TaskHandler {
       utils,
       environment,
       webpack: taskConfig
-    } = config;
-    const {hot} = taskConfig;
-    const {isDev, assetPath} = environment;
-    const {getTarget} = utils;
+    } = config
+    const {hot} = taskConfig
+    const {isDev, assetPath} = environment
+    const {getTarget} = utils
     const {
       jsBundle,
       cssBundle,
@@ -59,22 +59,22 @@ export default class Webpack extends TaskHandler {
       devPath: devHost,
       devPort,
       hotPort
-    } = sources;
-    const {gutil} = plugins;
-    const {log, colors} = gutil;
-    const {magenta, blue} = colors;
-    const logger = (prefix, message) => log(magenta(`[webpack: ${magenta(prefix)}] `) + blue(message));
-    let publicPath;
+    } = sources
+    const {gutil} = plugins
+    const {log, colors} = gutil
+    const {magenta, blue} = colors
+    const logger = (prefix, message) => log(magenta(`[webpack: ${magenta(prefix)}] `) + blue(message))
+    let publicPath
 
     return (cb) => {
-      const target = getTarget(metaData);
-      const devPath = isDev ? `${devHost}:${hotPort}/` : '/';
-      const bsPath = isDev ? `${devHost}:${devPort}/` : '/';
+      const target = getTarget(metaData)
+      const devPath = isDev ? `${devHost}:${hotPort}/` : '/'
+      const bsPath = isDev ? `${devHost}:${devPort}/` : '/'
 
       if (hot && target !== 'css') {
-        publicPath = isDev ? devPath : assetPath;
+        publicPath = isDev ? devPath : assetPath
       } else {
-        publicPath = isDev ? bsPath : assetPath;
+        publicPath = isDev ? bsPath : assetPath
       }
 
       const webpackConfig = makeConfig(config, {
@@ -85,57 +85,57 @@ export default class Webpack extends TaskHandler {
         taskConfig,
         jsBundle,
         cssBundle
-      });
-      const compiler = webpack(webpackConfig);
+      })
+      const compiler = webpack(webpackConfig)
 
       function compileLogger(err, stats) {
         if (err) {
           throw new gutil.PluginError({
             plugin: '[webpack]',
             message: err.message
-          });
+          })
         }
 
         if (!isDev) {
-          log(stats.toString());
+          log(stats.toString())
         }
       }
 
       compiler.plugin('compile', () => {
-        logger('compile', `Webpack Bundling ${target} bundle`);
-      });
+        logger('compile', `Webpack Bundling ${target} bundle`)
+      })
 
       compiler.plugin('done', (stats) => {
-        logger('done', `Webpack Bundled ${target} bundle in ${stats.endTime - stats.startTime}ms`);
+        logger('done', `Webpack Bundled ${target} bundle in ${stats.endTime - stats.startTime}ms`)
 
         if (isDev && stats.hasErrors() || stats.hasWarnings()) {
-          const {errors, warnings} = stats.compilation;
-          let messages;
+          const {errors, warnings} = stats.compilation
+          let messages
 
           if (errors.length === warnings.length) {
-            messages = errors;
+            messages = errors
           } else {
-            messages = [...errors, ...warnings];
+            messages = [...errors, ...warnings]
           }
 
-          messages.forEach(({message}) => log(message));
+          messages.forEach(({message}) => log(message))
         }
 
         // avoid multiple calls of gulp callback
         if (kind(cb) === 'function') {
-          const gulpCb = cb;
+          const gulpCb = cb
 
-          cb = null;
-          gulpCb();
+          cb = null
+          gulpCb()
         }
-      });
+      })
 
       if (isDev) {
         if (hot && target === 'js') {
-          const Express = require('express');
-          const middleware = require('webpack-dev-middleware');
-          const hotMiddleware = require('webpack-hot-middleware');
-          const app = new Express();
+          const Express = require('express')
+          const middleware = require('webpack-dev-middleware')
+          const hotMiddleware = require('webpack-hot-middleware')
+          const app = new Express()
           const serverOptions = {
             contentBase: buildDir,
             quiet: true,
@@ -146,34 +146,34 @@ export default class Webpack extends TaskHandler {
             publicPath,
             headers: {'Access-Control-Allow-Origin': '*'},
             stats: {colors: true}
-          };
-          let hasRun = false;
+          }
+          let hasRun = false
 
-          app.use(middleware(compiler, serverOptions));
-          app.use(hotMiddleware(compiler));
+          app.use(middleware(compiler, serverOptions))
+          app.use(hotMiddleware(compiler))
 
           compiler.plugin('done', (stats) => {
             if (!hasRun) {
               app.listen(hotPort, (err) => {
                 if (err) {
-                  console.error(err);
+                  console.error(err)
                 } else {
-                  console.info('==> 🚧  Webpack development server listening on port %s', hotPort);
+                  console.info('==> 🚧  Webpack development server listening on port %s', hotPort)
                 }
 
-                hasRun = true;
-              });
+                hasRun = true
+              })
             }
-          });
+          })
         } else {
           compiler.watch({
             aggregateTimeout: 300,
             poll: true
-          }, compileLogger);
+          }, compileLogger)
         }
       } else {
-        compiler.run(compileLogger);
+        compiler.run(compileLogger)
       }
-    };
+    }
   }
 }

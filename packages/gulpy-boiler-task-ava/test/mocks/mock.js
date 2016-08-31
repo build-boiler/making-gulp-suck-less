@@ -1,5 +1,5 @@
-import c from './mock-dep';
+import c from './mock-dep'
 
 export default function(a, b) {
-  return a + b + c;
+  return a + b + c
 }

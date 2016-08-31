@@ -3,6 +3,7 @@ export default {
     './index.js'
   ].map(require.resolve),
   rules: {
-    'no-console': 0
+    'no-console': 0,
+    semi: ['warn', 'never']
   }
-};
+}

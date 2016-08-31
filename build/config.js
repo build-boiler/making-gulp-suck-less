@@ -1,5 +1,5 @@
-const {TRAVIS_BRANCH} = process.env;
-const isCi = !!TRAVIS_BRANCH;
+const {TRAVIS_BRANCH} = process.env
+const isCi = !!TRAVIS_BRANCH
 const opts = {
   plugins: {
     // config,
@@ -24,6 +24,6 @@ const opts = {
   wrapper: {
     // args
   }
-};
+}
 
-export default opts;
+export default opts

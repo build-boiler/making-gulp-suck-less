@@ -1,6 +1,6 @@
-import makeEnv from './environment';
-import makeConfig from './config';
-import makeUtils from './utils';
+import makeEnv from './environment'
+import makeConfig from './config'
+import makeUtils from './utils'
 
 /**
  * Construct a `config` Object to get passed around to all Gulp tasks
@@ -15,11 +15,11 @@ export default function(opts = {}) {
     environment = {},
     sources = {},
     utils = {}
-  } = opts;
+  } = opts
 
   return {
     environment: makeEnv({environment}),
     sources: makeConfig({sources}),
     utils: makeUtils({utils})
-  };
+  }
 }

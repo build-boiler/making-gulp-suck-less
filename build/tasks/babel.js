@@ -1,5 +1,5 @@
-import path from 'path';
-import through from 'through2';
+import path from 'path'
+import through from 'through2'
 
 export default function(gulp, plugins, config) {
   /* eslint prefer-arrow-callback: 0 */
@@ -9,41 +9,41 @@ export default function(gulp, plugins, config) {
     newer,
     gutil,
     gulpIf
-  } = plugins;
-  const {log, colors} = gutil;
-  const {cyan} = colors;
-  const {environment} = config;
-  const {isDev} = environment;
-  const scripts = './packages/*/src/**/*.js';
-  const dest = 'packages';
-  let srcEx, libFragment;
+  } = plugins
+  const {log, colors} = gutil
+  const {cyan} = colors
+  const {environment} = config
+  const {isDev} = environment
+  const scripts = './packages/*/src/**/*.js'
+  const dest = 'packages'
+  let srcEx, libFragment
 
   if (path.win32 === path) {
-    srcEx = /(packages\\[^\\]+)\\src\\/;
-    libFragment = '$1\\dist\\';
+    srcEx = /(packages\\[^\\]+)\\src\\/
+    libFragment = '$1\\dist\\'
   } else {
-    srcEx = new RegExp('(packages/[^/]+)/src/');
-    libFragment = '$1/dist/';
+    srcEx = new RegExp('(packages/[^/]+)/src/')
+    libFragment = '$1/dist/'
   }
 
   return () => {
     return gulp.src(scripts)
     .pipe(plumber({
       errorHandler(err) {
-        log(err.stack);
+        log(err.stack)
       }
     }))
     .pipe(through.obj(function(file, enc, cb) {
-      file._path = file.path;
-      file.path = file.path.replace(srcEx, libFragment);
-      cb(null, file);
+      file._path = file.path
+      file.path = file.path.replace(srcEx, libFragment)
+      cb(null, file)
     }))
     .pipe(gulpIf(isDev, newer(dest)))
     .pipe(through.obj(function(file, enc, cb) {
-      log(`Compiling", '${cyan(file._path)}'`);
-      cb(null, file);
+      log(`Compiling", '${cyan(file._path)}'`)
+      cb(null, file)
     }))
     .pipe(babel())
-    .pipe(gulp.dest(dest));
-  };
+    .pipe(gulp.dest(dest))
+  }
 }

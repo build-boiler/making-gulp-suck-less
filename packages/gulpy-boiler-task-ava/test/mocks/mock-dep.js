@@ -1,3 +1,3 @@
-const c = 3;
+const c = 3
 
-export default c;
+export default c

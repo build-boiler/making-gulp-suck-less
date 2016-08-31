@@ -1,4 +1,4 @@
-import rules from './rules';
+import rules from './rules'
 
 export default {
   extends: [
@@ -6,4 +6,4 @@ export default {
     './airbnb-override.js'
   ].map(require.resolve),
   rules
-};
+}

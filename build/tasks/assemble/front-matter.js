@@ -1,9 +1,9 @@
-import matter from 'parser-front-matter';
+import matter from 'parser-front-matter'
 
 export default function(file, next) {
   matter.parse(file, (err, file) => {
-    if (err) return next(err);
+    if (err) return next(err)
 
-    next(null, file);
-  });
+    next(null, file)
+  })
 }

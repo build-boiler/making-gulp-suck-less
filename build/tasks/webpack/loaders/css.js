@@ -1,5 +1,5 @@
-import kind from 'kind-of';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import kind from 'kind-of'
+import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 /**
  * Make the CSS loaders for both a JS and SCSS build
@@ -8,26 +8,26 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
  * @return {Array} css and scss loaders
  */
 export default function(config, opts) {
-  const {environment} = config;
-  const {isDev} = environment;
-  const {taskConfig, target} = opts;
-  const {includePaths = []} = taskConfig;
-  const cssMinimize = isDev ? '-autoprefixer&-minimize' : '-autoprefixer&minimize';
+  const {environment} = config
+  const {isDev} = environment
+  const {taskConfig, target} = opts
+  const {includePaths = []} = taskConfig
+  const cssMinimize = isDev ? '-autoprefixer&-minimize' : '-autoprefixer&minimize'
   const cssParams = [
     '&sourceMap',
     cssMinimize
-  ].join('&');
+  ].join('&')
   const sassParams = [
     'sourceMap',
     'sourceMapContents=true',
     'outputStyle=expanded'
-  ].join('&');
-  let sassLoader, cssLoader;
+  ].join('&')
+  let sassLoader, cssLoader
 
   if (Array.isArray(includePaths)) {
-    includePaths.forEach(fp => sassParams.push(`includePaths[]=${fp}`));
+    includePaths.forEach(fp => sassParams.push(`includePaths[]=${fp}`))
   } else if (kind(includePaths) === 'string') {
-    sassParams.push(`includePaths[]=${includePaths}`);
+    sassParams.push(`includePaths[]=${includePaths}`)
   }
 
   if (target === 'node') {
@@ -40,8 +40,8 @@ export default function(config, opts) {
           `css-loader?importLoaders=2${cssParams}`,
           'postcss-loader',
           `sass-loader?${sassParams}`
-        ].join('!');
-        break;
+        ].join('!')
+        break
       case 'css':
         sassLoader = ExtractTextPlugin.extract({
           fallbackLoader: 'style-loader',
@@ -50,15 +50,15 @@ export default function(config, opts) {
             'postcss-loader',
             `sass-loader?${sassParams}`
           ].join('!')
-        });
-        break;
+        })
+        break
     }
 
     cssLoader = [
       'style-loader',
       `css-loader?importLoaders=1&modules&localIdentName=[name]__[local]___[hash:base64:5]${cssParams}`,
       'postcss-loader'
-    ].join('!');
+    ].join('!')
   } else {
     cssLoader = ExtractTextPlugin.extract({
       fallbackLoader: 'style-loader',
@@ -66,7 +66,7 @@ export default function(config, opts) {
         `css-loader?importLoaders=1&modules&localIdentName=[hash:base64:5]${cssParams}`,
         'postcss-loader'
       ].join('!')
-    });
+    })
 
     sassLoader = ExtractTextPlugin.extract({
       fallbackLoader: 'style-loader',
@@ -75,7 +75,7 @@ export default function(config, opts) {
         'postcss-loader',
         `sass-loader?${sassParams}`
       ].join('!')
-    });
+    })
   }
 
   const loaders = [
@@ -89,7 +89,7 @@ export default function(config, opts) {
       exclude: /node_modules/,
       loader: sassLoader
     }
-  ];
+  ]
 
-  return {loaders};
+  return {loaders}
 }

@@ -1,4 +1,4 @@
-import kind from 'kind-of';
+import kind from 'kind-of'
 
 /**
  * Wrap the `require`ed Gulp task in an extra function to lazy-load the task
@@ -11,45 +11,45 @@ import kind from 'kind-of';
  * @return {Object} tasks Object with lazy-loaded tasks
  */
 export default function(tasks = {}, gulp, plugins, config, opts = {}) {
-  const isConsumableFn = (fn) => !/class/.test(fn.toString()) && fn.length >= 3;
-  let {args = []} = opts;
+  const isConsumableFn = (fn) => !/class/.test(fn.toString()) && fn.length >= 3
+  let {args = []} = opts
 
   return Object.keys(tasks).reduce((acc, taskName) => {
-    const taskGetter = tasks[taskName];
-    const taskType = kind(taskGetter);
+    const taskGetter = tasks[taskName]
+    const taskType = kind(taskGetter)
 
     if (taskType !== 'function') {
-      throw new Error(`Supplied task must be a function received type ${taskType} from ${taskName}`); // eslint-disable-line max-len
+      throw new Error(`Supplied task must be a function received type ${taskType} from ${taskName}`) // eslint-disable-line max-len
     }
 
     // lazy load the `require`
-    const taskFn = taskGetter();
+    const taskFn = taskGetter()
 
-    args = Array.isArray(args) ? args : [args];
+    args = Array.isArray(args) ? args : [args]
 
     acc[taskName] = function(cb) {
       /**
        * In Gulp3 the `metaData` is put on the Gulp instance and in Gulp4
        * it is bound as the context of the task funtion
        */
-      const metaData = gulp.metaData || this.metaData;
-      const {name: target} = metaData;
-      let gulpFn;
+      const metaData = gulp.metaData || this.metaData
+      const {name: target} = metaData
+      let gulpFn
 
-      Object.assign(config, {metaData});
+      Object.assign(config, {metaData})
 
       if (isConsumableFn(taskFn)) {
-        gulpFn = taskFn(gulp, plugins, config, ...args);
+        gulpFn = taskFn(gulp, plugins, config, ...args)
       } else {
         /* eslint new-cap:0 */
-        const taskInst = new taskFn(target, plugins, config);
+        const taskInst = new taskFn(target, plugins, config)
 
-        gulpFn = taskInst.run(gulp, ...args);
+        gulpFn = taskInst.run(gulp, ...args)
       }
 
-      return gulpFn(cb);
-    };
+      return gulpFn(cb)
+    }
 
-    return acc;
-  }, {});
+    return acc
+  }, {})
 }

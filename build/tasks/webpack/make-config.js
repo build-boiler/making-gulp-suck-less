@@ -1,8 +1,8 @@
-import path from 'path';
-import formatter from 'eslint-friendly-formatter';
-import getLoaders from './loaders';
-import getPlugins from './plugins';
-import getTools from './isomorphic-tools';
+import path from 'path'
+import formatter from 'eslint-friendly-formatter'
+import getLoaders from './loaders'
+import getPlugins from './plugins'
+import getTools from './isomorphic-tools'
 
 /**
  * Make the Webpack config like `webpack.config.js`
@@ -15,8 +15,8 @@ export default function(config, opts) {
     sources,
     utils,
     environment
-  } = config;
-  const {srcDir, buildDir} = sources;
+  } = config
+  const {srcDir, buildDir} = sources
   const {
     hot,
     jsBundle,
@@ -24,15 +24,15 @@ export default function(config, opts) {
     target,
     publicPath,
     taskConfig = {}
-  } = opts;
-  const {entry: entries = {}} = taskConfig;
-  const {isDev} = environment;
-  const {addbase} = utils;
-  const tools = getTools(config, {target});
-  const loaderPluginOpts = Object.assign({}, opts, {tools});
-  const loaders = getLoaders(config, loaderPluginOpts);
-  const plugins = getPlugins(config, loaderPluginOpts);
-  const context = taskConfig.context || addbase(srcDir);
+  } = opts
+  const {entry: entries = {}} = taskConfig
+  const {isDev} = environment
+  const {addbase} = utils
+  const tools = getTools(config, {target})
+  const loaderPluginOpts = Object.assign({}, opts, {tools})
+  const loaders = getLoaders(config, loaderPluginOpts)
+  const plugins = getPlugins(config, loaderPluginOpts)
+  const context = taskConfig.context || addbase(srcDir)
   const webpackConfig = {
     cache: isDev,
     debug: isDev,
@@ -54,19 +54,19 @@ export default function(config, opts) {
         '.yml'
       ]
     }
-  };
-  let entry, bundleName;
+  }
+  let entry, bundleName
 
   switch (target) {
     case 'js':
       const hmrOpts = [
         `path=${publicPath}__webpack_hmr`,
         'reload=true'
-      ];
-      const hotEntry = hot && isDev ? [`webpack-hot-middleware/client?${hmrOpts.join('&')}`] : [];
-      const configFile = require.resolve('../../../packages/eslint-config-gulpy-boiler');
+      ]
+      const hotEntry = hot && isDev ? [`webpack-hot-middleware/client?${hmrOpts.join('&')}`] : []
+      const configFile = require.resolve('../../../packages/eslint-config-gulpy-boiler')
 
-      bundleName = isDev ? '[name].js' : '[name]-[chunkhash].js';
+      bundleName = isDev ? '[name].js' : '[name]-[chunkhash].js'
 
       entry = {
         [jsBundle]: [
@@ -74,7 +74,7 @@ export default function(config, opts) {
           'babel-polyfill',
           './' + path.join('js', entries.js || 'index.js')
         ]
-      };
+      }
 
       Object.assign(webpackConfig, {
         entry,
@@ -92,16 +92,16 @@ export default function(config, opts) {
           failOnWarning: !isDev,
           failOnError: !isDev
         }
-      });
-      break;
+      })
+      break
     case 'css':
-      bundleName = isDev ? 'assets.css' : 'assets-[chunkhash].css';
+      bundleName = isDev ? 'assets.css' : 'assets-[chunkhash].css'
 
       entry = {
         [cssBundle]: [
           './' + path.join('js', entries.assets || 'assets.js')
         ]
-      };
+      }
 
       Object.assign(webpackConfig, {
         entry,
@@ -111,10 +111,10 @@ export default function(config, opts) {
           filename: path.join('js', bundleName)
         },
         devtool: 'source-map'
-      });
-      break;
+      })
+      break
     case 'node':
-      entry = taskConfig.serverEntry;
+      entry = taskConfig.serverEntry
 
       Object.assign(webpackConfig, {
         entry,
@@ -125,9 +125,9 @@ export default function(config, opts) {
           libraryTarget: 'commonjs2'
         },
         target: 'node'
-      });
-      break;
+      })
+      break
   } // end `switch`
 
-  return webpackConfig;
+  return webpackConfig
 }

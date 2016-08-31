@@ -1,4 +1,4 @@
-import meow from 'meow';
+import meow from 'meow'
 
 /**
  * Use `meow` to create a cli
@@ -15,12 +15,12 @@ export default function(opts) {
     options = [],
     alias,
     examples
-  } = opts;
+  } = opts
 
-  const cliOpts = (Array.isArray(options) ? options : [options]).join('/n');
+  const cliOpts = (Array.isArray(options) ? options : [options]).join('/n')
   const cliExamples = (Array.isArray(examples) ? examples : [examples]).map(ex => {
-    return `$ ${cmd} ${ex}`;
-  });
+    return `$ ${cmd} ${ex}`
+  })
 
   return meow(`
     Usage
@@ -31,5 +31,5 @@ export default function(opts) {
 
     Examples
       ${cliExamples}
-  `, alias);
+  `, alias)
 }

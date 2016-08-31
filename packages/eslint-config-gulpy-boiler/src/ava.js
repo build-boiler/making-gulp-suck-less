@@ -4,6 +4,7 @@ export default {
   ].map(require.resolve),
   plugins: ['ava'],
   rules: {
+    semi: ['warn', 'never'],
     'no-console': 0
   }
-};
+}

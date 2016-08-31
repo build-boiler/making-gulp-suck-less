@@ -1,1 +1,1 @@
-export {default as GetAssets} from './get-assets';
+export {default as GetAssets} from './get-assets'

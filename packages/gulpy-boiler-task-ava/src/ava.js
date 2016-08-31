@@ -1,6 +1,6 @@
-import path from 'path';
-import {TaskHandler} from 'gulpy-boiler-utils';
-import avaPlugin from './plugin';
+import path from 'path'
+import {TaskHandler} from 'gulpy-boiler-utils'
+import avaPlugin from './plugin'
 
 /**
  * Typical `gulp-boiler` task function
@@ -11,10 +11,10 @@ import avaPlugin from './plugin';
  */
 export default class Ava extends TaskHandler {
   constructor(name, plugins, config) {
-    super(name, plugins, config);
+    super(name, plugins, config)
 
-    const {environment} = config;
-    const {isLocalDev, isCi} = environment;
+    const {environment} = config
+    const {isLocalDev, isCi} = environment
     const {flags} = this.cli({
       cmd: 'gulp ava',
       options: [
@@ -32,8 +32,8 @@ export default class Ava extends TaskHandler {
         w: 'watch'
       },
       examples: '--file bleep-spec'
-    });
-    const {coverage, debug, watch} = flags;
+    })
+    const {coverage, debug, watch} = flags
     const ava = {
       nyc: coverage,
       debug,
@@ -41,28 +41,28 @@ export default class Ava extends TaskHandler {
       require: path.resolve(__dirname, '.', 'babel-hook.js'),
       verbose: flags.verbose || !isCi,
       watch
-    };
+    }
 
     this.configure({
       ava,
       sources: {
         srcDir: isLocalDev ? 'packages/*/test' : 'test/unit'
       }
-    });
+    })
     this.loadPlugins({
       config: path.resolve(__dirname, '..', 'package.json')
-    });
+    })
   }
   task(gulp, plugins, config) {
-    const {sources, utils, cli, ava} = config;
-    const {srcDir} = sources;
-    const {addbase} = utils;
-    const {file} = cli.flags;
-    const src = file ? addbase(srcDir, `${file}.js`) : addbase(srcDir, '**/*-spec.js');
+    const {sources, utils, cli, ava} = config
+    const {srcDir} = sources
+    const {addbase} = utils
+    const {file} = cli.flags
+    const src = file ? addbase(srcDir, `${file}.js`) : addbase(srcDir, '**/*-spec.js')
 
     return () => {
       return gulp.src(src)
-        .pipe(avaPlugin(ava));
-    };
+        .pipe(avaPlugin(ava))
+    }
   }
 }

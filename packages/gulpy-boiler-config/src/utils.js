@@ -1,5 +1,5 @@
-import path from 'path';
-import merge from 'merge-deep';
+import path from 'path'
+import merge from 'merge-deep'
 
 /**
  * Make the utils
@@ -7,18 +7,18 @@ import merge from 'merge-deep';
  * @return {Object}
  */
 export default function({utils}) {
-  const cwd = process.cwd();
-  const rootDir = path.resolve(__dirname, '..', '..');
+  const cwd = process.cwd()
+  const rootDir = path.resolve(__dirname, '..', '..')
 
   return merge({
     addbase(...args) {
-      return path.join.apply(path, [cwd, ...args]);
+      return path.join.apply(path, [cwd, ...args])
     },
     addroot(...args) {
-      return this.addbase.apply(this, [rootDir, ...args]);
+      return this.addbase.apply(this, [rootDir, ...args])
     },
     getTarget({name}) {
-      return name.split(':').slice(-1)[0];
+      return name.split(':').slice(-1)[0]
     }
-  }, utils);
+  }, utils)
 }

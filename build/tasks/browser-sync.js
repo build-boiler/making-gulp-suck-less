@@ -1,17 +1,17 @@
-import cors from 'cors';
-import {TaskHandler} from '../../packages/gulpy-boiler-utils';
+import cors from 'cors'
+import {TaskHandler} from '../../packages/gulpy-boiler-utils'
 
 export default class BrowserSync extends TaskHandler {
   task(gulp, plugins, config) {
-    const {browserSync: runner} = plugins;
-    const {sources, utils} = config;
-    const {devPort, buildDir} = sources;
-    const {addbase} = utils;
+    const {browserSync: runner} = plugins
+    const {sources, utils} = config
+    const {devPort, buildDir} = sources
+    const {addbase} = utils
 
     return (cb) => {
       const middleware = [
         cors()
-      ];
+      ]
 
       const bsConfig = {
         open: true,
@@ -20,9 +20,9 @@ export default class BrowserSync extends TaskHandler {
           baseDir: addbase(buildDir),
           middleware
         }
-      };
+      }
 
-      runner(bsConfig);
-    };
+      runner(bsConfig)
+    }
   }
 }

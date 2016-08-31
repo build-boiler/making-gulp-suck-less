@@ -1,2 +1,2 @@
 /* eslint no-console:0 */
-console.log('**bloop**');
+console.log('**bloop**')

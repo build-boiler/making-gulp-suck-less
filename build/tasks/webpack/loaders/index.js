@@ -1,4 +1,4 @@
-import getCssLoaders from './css';
+import getCssLoaders from './css'
 
 /**
  * Make da JS loaders and base asset/file loaders
@@ -7,11 +7,11 @@ import getCssLoaders from './css';
  * @return {Object} preLoaders, loaders, and postLoaders
  */
 export default function(config, opts) {
-  const {tools, taskConfig, target} = opts;
-  const {expose = []} = taskConfig;
-  const {environment} = config;
-  const {env} = environment;
-  const fileLoader = 'file-loader?name=[path][name].[ext]';
+  const {tools, taskConfig, target} = opts
+  const {expose = []} = taskConfig
+  const {environment} = config
+  const {env} = environment
+  const fileLoader = 'file-loader?name=[path][name].[ext]'
   const babelrc = {
     presets: ['react', 'es2015', 'stage-0'],
     env: {
@@ -42,16 +42,16 @@ export default function(config, opts) {
         ]
       }
     }
-  };
-  const {presets, env: babelEnv} = babelrc;
-  const {plugins} = babelEnv[env];
+  }
+  const {presets, env: babelEnv} = babelrc
+  const {plugins} = babelEnv[env]
   const preLoaders = [
     {
       test: /\.jsx?$/,
       exclude: /node_modules/,
       loader: 'eslint-loader'
     }
-  ];
+  ]
   const loaders = [
     {
       test: /\.jsx$/,
@@ -75,33 +75,33 @@ export default function(config, opts) {
       test: /\.json$/,
       loader: 'json'
     }
-  ];
-  const postLoaders = [];
+  ]
+  const postLoaders = []
 
   if (target === 'js') {
     Object.keys(expose).forEach((modName) => {
       postLoaders.push({
         test: require.resolve(modName),
         loader: `expose?${expose[modName]}`
-      });
-    });
+      })
+    })
   }
 
   const jsLoaders = {
     preLoaders,
     loaders,
     postLoaders
-  };
+  }
 
-  const cssLoaders = getCssLoaders(config, opts);
+  const cssLoaders = getCssLoaders(config, opts)
 
   return Object.keys(cssLoaders).reduce((acc, key) => {
-    const cssLoader = cssLoaders[key];
+    const cssLoader = cssLoaders[key]
 
     if (Array.isArray(cssLoader) && Array.isArray(acc[key])) {
-      acc[key].push(...cssLoader);
+      acc[key].push(...cssLoader)
     }
 
-    return acc;
-  }, jsLoaders);
+    return acc
+  }, jsLoaders)
 }

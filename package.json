@@ -6,7 +6,7 @@
   "scripts": {
     "start": "gulp babel && gulp build",
     "test": "gulp ava",
-    "lint:fix": "eslint ./build/** ./packages/*/src/** --fix",
+    "lint:fix": "eslint ./build/** ./packages/*/src/** ./packages/*/test/** gulpfile.babel.js --fix",
     "lerna:bootstrap": "lerna bootstrap",
     "lerna:init": "lerna init",
     "lerna:publish": "lerna publish",

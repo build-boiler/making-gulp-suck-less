@@ -1,36 +1,36 @@
-import EventEmitter from 'events';
-import load from 'gulpy-boiler-load-plugins';
-import merge from 'merge-deep';
-import cli from './cli';
+import EventEmitter from 'events'
+import load from 'gulpy-boiler-load-plugins'
+import merge from 'merge-deep'
+import cli from './cli'
 
 export default class TaskHandler extends EventEmitter {
   constructor(name, plugins = {}, config = {}) {
-    super();
-    this.name = name;
-    this.plugins = plugins;
-    this.config = config;
+    super()
+    this.name = name
+    this.plugins = plugins
+    this.config = config
   }
 
   cli(opts) {
-    const data = cli(opts);
-    const {flags} = data;
+    const data = cli(opts)
+    const {flags} = data
     const cliData = Object.keys(flags).reduce((acc, key) => {
-      const aliasVal = opts.alias && opts.alias[key];
+      const aliasVal = opts.alias && opts.alias[key]
 
       if (aliasVal) {
         Object.assign(acc.flags, {
           [aliasVal]: flags[key]
-        });
+        })
       }
 
-      return acc;
-    }, data);
+      return acc
+    }, data)
 
     this.configure({
       cli: cliData
-    });
+    })
 
-    return cliData;
+    return cliData
   }
 
   /**
@@ -39,24 +39,24 @@ export default class TaskHandler extends EventEmitter {
    *  - onto context of TaskHandler parent instance
    */
   configure(config = {}) {
-    this.config = merge({}, this.config, config);
+    this.config = merge({}, this.config, config)
 
-    return this.config;
+    return this.config
   }
 
   loadPlugins(opts = {}) {
-    Object.assign(this.plugins, load(opts));
+    Object.assign(this.plugins, load(opts))
 
-    return this.plugins;
+    return this.plugins
   }
 
   on(event, cb) {
-    super.on(event, cb);
+    super.on(event, cb)
 
-    return this;
+    return this
   }
 
   run(gulp, ...args) {
-    return this.task(gulp, this.plugins, this.config, ...args);
+    return this.task(gulp, this.plugins, this.config, ...args)
   }
 }

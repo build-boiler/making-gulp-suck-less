@@ -1,5 +1,5 @@
-import path from 'path';
-import load from 'gulp-load-plugins';
+import path from 'path'
+import load from 'gulp-load-plugins'
 
 /**
  * Load all the Gulp plugins for the `root` package.json and any additonal specified packages
@@ -12,8 +12,8 @@ import load from 'gulp-load-plugins';
  *
  */
 export default function(opts = {}) {
-  const {pattern, lazy, rename, config} = opts;
-  const defaultPkg = path.join(process.cwd(), 'package.json');
+  const {pattern, lazy, rename, config} = opts
+  const defaultPkg = path.join(process.cwd(), 'package.json')
   const loadOpts = {
     config: config || defaultPkg,
     pattern: pattern || [
@@ -29,7 +29,7 @@ export default function(opts = {}) {
       'run-sequence': 'sequence',
       'gulp-if': 'gulpIf'
     }, rename)
-  };
+  }
 
-  return Object.assign({}, load(loadOpts));
+  return Object.assign({}, load(loadOpts))
 }

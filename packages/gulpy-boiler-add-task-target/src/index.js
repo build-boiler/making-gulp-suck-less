@@ -7,29 +7,29 @@
  * @return {undefined}
  */
 export default function(gulp, tasks) {
-  const gulpProto = gulp.Gulp && gulp.Gulp.prototype && gulp.Gulp.prototype._runTask;
-  const isGulp3 = typeof gulpProto === 'function';
+  const gulpProto = gulp.Gulp && gulp.Gulp.prototype && gulp.Gulp.prototype._runTask
+  const isGulp3 = typeof gulpProto === 'function'
 
   if (isGulp3) {
-    gulp.Gulp.prototype.__runTask = gulp.Gulp.prototype._runTask;
+    gulp.Gulp.prototype.__runTask = gulp.Gulp.prototype._runTask
     gulp.Gulp.prototype._runTask = function(task) {
-      const {name} = task;
+      const {name} = task
 
-      this.metaData = {name};
-      this.__runTask(task);
-    };
+      this.metaData = {name}
+      this.__runTask(task)
+    }
   } else {
-    const DefaultRegistry = require('undertaker-registry');
+    const DefaultRegistry = require('undertaker-registry')
 
     class TaskMetadataRegistry extends DefaultRegistry {
       set(name, fn) {
-        const metaData = {name};
-        const task = this._tasks[name] = fn.bind({metaData});
+        const metaData = {name}
+        const task = this._tasks[name] = fn.bind({metaData})
 
-        return task;
+        return task
       }
     }
 
-    gulp.registry(new TaskMetadataRegistry());
+    gulp.registry(new TaskMetadataRegistry())
   }
 }
