@@ -1,5 +1,5 @@
 {
   "extends": [
-    "./packages/eslint-config-gulpy-boiler/dist/index.js"
+    "./packages/eslint-config-gulpy-boiler/dist/build.js"
   ]
 }
