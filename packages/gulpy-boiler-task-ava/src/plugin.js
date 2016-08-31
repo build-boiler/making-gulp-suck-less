@@ -8,20 +8,22 @@ export default function(opts = {}) {
   const files = [];
   const {debug, ...options} = opts;
   let cwd = process.cwd();
-  let BIN;
+  let BIN, resolveFp;
 
   try {
-    BIN = require.resolve(
-      debug ? path.join(cwd, 'node_modules/ava/profile.js') : path.join(cwd, 'node_modules/ava/cli.js')
-    );
+    resolveFp = debug ?
+      path.join(cwd, 'node_modules/ava/profile.js') :
+      path.join(cwd, 'node_modules/ava/cli.js');
+    BIN = require.resolve(resolveFp);
   } catch (err) {
     ([cwd] = cwd.split(/\/packages\//));
-    BIN = require.resolve(
-      debug ? path.join(cwd, 'node_modules/ava/profile.js') : path.join(cwd, 'node_modules/ava/cli.js')
-    );
+    resolveFp = debug ?
+      path.join(cwd, 'node_modules/ava/profile.js') :
+      path.join(cwd, 'node_modules/ava/cli.js');
+    BIN = require.resolve(resolveFp);
   }
 
-  return through.obj(function(file, enc, cb) {
+  return through.obj(function(file, enc, cb) { // eslint-disable-line prefer-arrow-callback
     if (file.isNull()) {
       cb(null, file);
       return;
@@ -39,7 +41,7 @@ export default function(opts = {}) {
     const args = [BIN].concat(files, '--color', dargs(options, {excludes: ['nyc']}));
 
     if (opts.nyc) {
-      const nycBin = path.join(__dirname, 'nyc/bin/nyc.js');
+      const nycBin = path.join(cwd, 'node_modules/nyc/bin/nyc.js');
 
       if (nycBin) {
         args.unshift(nycBin);
@@ -51,7 +53,7 @@ export default function(opts = {}) {
     const runner = debug ? 'iron-node' : process.execPath;
     const cp = childProcess.spawn(runner, args, {cwd, stdio: 'inherit'});
 
-    cp.on('close',  (code) =>{
+    cp.on('close', (code) => {
       if (code) {
         return this.emit('error', new PluginError('gulp-ava', 'ava tests failed'));
       }

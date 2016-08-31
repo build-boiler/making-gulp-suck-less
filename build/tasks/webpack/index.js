@@ -1,7 +1,7 @@
 import kind from 'kind-of';
 import webpack from 'webpack';
 import makeConfig from './make-config';
-import {TaskHandler} from '../../packages/gulpy-boiler-utils';
+import {TaskHandler} from '../../../packages/gulpy-boiler-utils';
 
 export default class Webpack extends TaskHandler {
   constructor(name, plugins, config) {
@@ -29,7 +29,7 @@ export default class Webpack extends TaskHandler {
       provide: {
         'global.jQuery': 'jquery',
         'window.jQuery': 'jquery',
-        '$': 'jquery'
+        $: 'jquery'
       }
     };
     const sources = {
@@ -63,15 +63,15 @@ export default class Webpack extends TaskHandler {
     const {gutil} = plugins;
     const {log, colors} = gutil;
     const {magenta, blue} = colors;
-    const logger = (prefix, message) => log(magenta(`[webpack: ${magenta(prefix)}] `) +  blue(message));
+    const logger = (prefix, message) => log(magenta(`[webpack: ${magenta(prefix)}] `) + blue(message));
     let publicPath;
 
     return (cb) => {
       const target = getTarget(metaData);
-      const devPath = isDev ? `http://${devHost}:${hotPort}/` : '/';
-      const bsPath = isDev ? `http://${devHost}:${devPort}/` : '/';
+      const devPath = isDev ? `${devHost}:${hotPort}/` : '/';
+      const bsPath = isDev ? `${devHost}:${devPort}/` : '/';
 
-      if (hot) {
+      if (hot && target !== 'css') {
         publicPath = isDev ? devPath : assetPath;
       } else {
         publicPath = isDev ? bsPath : assetPath;
@@ -121,9 +121,9 @@ export default class Webpack extends TaskHandler {
           messages.forEach(({message}) => log(message));
         }
 
-        //avoid multiple calls of gulp callback
+        // avoid multiple calls of gulp callback
         if (kind(cb) === 'function') {
-          let gulpCb = cb;
+          const gulpCb = cb;
 
           cb = null;
           gulpCb();

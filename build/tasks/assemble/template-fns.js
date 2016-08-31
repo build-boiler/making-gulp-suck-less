@@ -16,7 +16,7 @@ export default function(config) {
   }
 
   function join(...args) {
-    //allow Number in filepath, must convert to String or `path.join` yells
+    // allow Number in filepath, must convert to String or `path.join` yells
     const normalizedArgs = args.map(arg => kind(arg) === 'number' ? `${arg}` : arg);
 
     return path.join(...normalizedArgs);

@@ -2,6 +2,7 @@ import path from 'path';
 import through from 'through2';
 
 export default function(gulp, plugins, config) {
+  /* eslint prefer-arrow-callback: 0 */
   const {
     babel,
     plumber,
@@ -28,7 +29,7 @@ export default function(gulp, plugins, config) {
   return () => {
     return gulp.src(scripts)
     .pipe(plumber({
-      errorHandler: function(err) {
+      errorHandler(err) {
         log(err.stack);
       }
     }))

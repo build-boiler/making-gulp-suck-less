@@ -1,6 +1,5 @@
 import path from 'path';
 import {TaskHandler} from 'gulpy-boiler-utils';
-import makeEslintConfig from 'boiler-config-eslint';
 import formatter from 'eslint-friendly-formatter';
 
 /**
@@ -49,23 +48,38 @@ export default class Eslint extends TaskHandler {
   task(gulp, plugins, config) {
     const {environment, sources} = config;
     const {src, target} = sources;
-    const {eslint} = plugins;
-    const {isDev} = environment;
+    const {eslint, gulpIf} = plugins;
+    const {isDev, isLocalDev} = environment;
+    const basePath = isLocalDev ?
+      path.resolve(__dirname, '..', '..', 'eslint-config-gulpy-boiler', 'dist', 'index.js') :
+      require.resolve('eslint-config-gulpy-boiler');
+    const getConfig = (fp) => {
+      return fp ? path.join(path.dirname(basePath), fp) : basePath;
+    };
 
     return () => {
-      const eslintConfig = makeEslintConfig({
-        basic: false,
-        react: false,
-        generate: false,
-        isDev,
-        lintEnv: target
-      });
+      let configFile;
+
+      switch (target) {
+        case 'test':
+          configFile = getConfig('ava.js');
+          break;
+        case 'build':
+          configFile = getConfig('build.js');
+          break;
+        default:
+          configFile = getConfig();
+          break;
+      }
+
+      const eslintConfig = {configFile};
 
       this.emit('change', eslintConfig);
 
       return gulp.src(src)
         .pipe(eslint(eslintConfig))
-        .pipe(eslint.format(formatter));
+        .pipe(eslint.format(formatter))
+        .pipe(gulpIf(!isDev, eslint.failAfterError()));
     };
   }
 }

@@ -19,10 +19,10 @@ export default function(tasks = {}, gulp, plugins, config, opts = {}) {
     const taskType = kind(taskGetter);
 
     if (taskType !== 'function') {
-      throw new Error(`Supplied task must be a function received type ${taskType} from ${taskName}`);
+      throw new Error(`Supplied task must be a function received type ${taskType} from ${taskName}`); // eslint-disable-line max-len
     }
 
-    //lazy load the `require`
+    // lazy load the `require`
     const taskFn = taskGetter();
 
     args = Array.isArray(args) ? args : [args];
@@ -41,7 +41,7 @@ export default function(tasks = {}, gulp, plugins, config, opts = {}) {
       if (isConsumableFn(taskFn)) {
         gulpFn = taskFn(gulp, plugins, config, ...args);
       } else {
-        /*eslint new-cap:0*/
+        /* eslint new-cap:0 */
         const taskInst = new taskFn(target, plugins, config);
 
         gulpFn = taskInst.run(gulp, ...args);

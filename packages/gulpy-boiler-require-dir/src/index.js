@@ -32,10 +32,10 @@ function removeExt(fp) {
 function requireFile(name, fp, tasks) {
   name = camelCase(name);
 
-  if (tasks[name]) return {}; //don't overwrite parent tasks
+  if (tasks[name]) return {}; // don't overwrite parent tasks
 
   return {
-    [ camelCase(name) ]: () => require(fp)
+    [camelCase(name)]: () => require(fp)
   };
 }
 
@@ -106,7 +106,7 @@ const resolveTaskPath = (() => {
     );
   };
 
-  return function resolveTaskPath(fp) {
+  return function resolver(fp) {
     let taskDir;
 
     try {

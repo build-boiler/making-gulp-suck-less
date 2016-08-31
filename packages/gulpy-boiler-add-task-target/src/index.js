@@ -22,10 +22,6 @@ export default function(gulp, tasks) {
     const DefaultRegistry = require('undertaker-registry');
 
     class TaskMetadataRegistry extends DefaultRegistry {
-      constructor() {
-        super();
-      }
-
       set(name, fn) {
         const metaData = {name};
         const task = this._tasks[name] = fn.bind({metaData});

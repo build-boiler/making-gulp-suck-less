@@ -18,12 +18,14 @@ export default class Ava extends TaskHandler {
     const {flags} = this.cli({
       cmd: 'gulp ava',
       options: [
+        '-c, --coverage test coverage with nyc',
         '-f, --file specify a single file',
         '-d, --debug run with iron-node',
         '-vb, --verbose run in verbose mode',
         '-w, --watch test files'
       ],
       alias: {
+        c: 'coverage',
         d: 'debug',
         f: 'file',
         vb: 'verbose',
@@ -31,8 +33,9 @@ export default class Ava extends TaskHandler {
       },
       examples: '--file bleep-spec'
     });
-    const {debug, watch} = flags;
+    const {coverage, debug, watch} = flags;
     const ava = {
+      nyc: coverage,
       debug,
       serial: debug,
       require: path.resolve(__dirname, '.', 'babel-hook.js'),

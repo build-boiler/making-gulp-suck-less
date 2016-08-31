@@ -12,7 +12,7 @@ export default function({environment}) {
   const isDev = env === 'development';
   const rootDir = path.resolve(__dirname, '..', '..');
   const isLocalDev = path.basename(rootDir) === 'packages';
-  const assetPath  = isDev ? '/' : '/'; //enter CDN paths here that vary with environment
+  const assetPath = isDev ? '/' : '/'; // enter CDN paths here that vary with environment
 
   return Object.assign({}, environment, {
     assetPath,

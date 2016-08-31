@@ -95,7 +95,7 @@ export default function(config, opts) {
 
   const cssLoaders = getCssLoaders(config, opts);
 
-  return  Object.keys(cssLoaders).reduce((acc, key) => {
+  return Object.keys(cssLoaders).reduce((acc, key) => {
     const cssLoader = cssLoaders[key];
 
     if (Array.isArray(cssLoader) && Array.isArray(acc[key])) {

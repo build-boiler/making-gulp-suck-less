@@ -15,11 +15,11 @@ import lazyLoad from 'gulpy-boiler-lazy-task';
  * @return {Object} config, plugins, tasks
  */
 export default function(gulp, opts) {
-  addTarget(gulp); //access the gulp task name inside the task
+  addTarget(gulp); // access the gulp task name inside the task
 
-  const plugins = loadPlugins(opts.plugins); //opts.pattern, opts.lazy, opts.rename, opts.packages} = opts
-  const config = makeConfig(opts.config); //opts.tasks, opts.sources, opts.env, opts.utils
-  const tasksObj = getTasks(opts.dirs); //opts.tasks, opts.lazy => default true
+  const plugins = loadPlugins(opts.plugins); // opts.pattern, opts.lazy, opts.rename, opts.packages} = opts
+  const config = makeConfig(opts.config); // opts.tasks, opts.sources, opts.env, opts.utils
+  const tasksObj = getTasks(opts.dirs); // opts.tasks, opts.lazy => default true
   const tasks = lazyLoad(tasksObj, gulp, plugins, config, opts);
 
   return {
