@@ -1,5 +1,6 @@
 import path from 'path'
 import through from 'through2'
+import reporter from 'flow-reporter';
 
 export default function(gulp, plugins, config) {
   /* eslint prefer-arrow-callback: 0 */
@@ -8,7 +9,8 @@ export default function(gulp, plugins, config) {
     plumber,
     newer,
     gutil,
-    gulpIf
+    gulpIf,
+    flowtype
   } = plugins
   const {log, colors} = gutil
   const {cyan} = colors
@@ -33,6 +35,15 @@ export default function(gulp, plugins, config) {
         log(err.stack)
       }
     }))
+    .pipe(flowtype({
+        all: false,
+        weak: false,
+        declarations: './declarations',
+        killFlow: !isDev,
+        beep: !isDev,
+        abort: !isDev,
+        reporter
+    }))
     .pipe(through.obj(function(file, enc, cb) {
       file._path = file.path
       file.path = file.path.replace(srcEx, libFragment)
@@ -44,6 +55,6 @@ export default function(gulp, plugins, config) {
       cb(null, file)
     }))
     .pipe(babel())
-    .pipe(gulp.dest(dest))
+    .pipe(gulp.dest(dest));
   }
 }
