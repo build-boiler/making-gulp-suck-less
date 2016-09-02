@@ -1,6 +1,5 @@
 import path from 'path'
 import through from 'through2'
-import reporter from 'flow-reporter';
 
 export default function(gulp, plugins, config) {
   /* eslint prefer-arrow-callback: 0 */
@@ -9,8 +8,7 @@ export default function(gulp, plugins, config) {
     plumber,
     newer,
     gutil,
-    gulpIf,
-    flowtype
+    gulpIf
   } = plugins
   const {log, colors} = gutil
   const {cyan} = colors
@@ -30,31 +28,22 @@ export default function(gulp, plugins, config) {
 
   return () => {
     return gulp.src(scripts)
-    .pipe(plumber({
-      errorHandler(err) {
-        log(err.stack)
-      }
-    }))
-    .pipe(flowtype({
-        all: false,
-        weak: false,
-        declarations: './declarations',
-        killFlow: !isDev,
-        beep: !isDev,
-        abort: !isDev,
-        reporter
-    }))
-    .pipe(through.obj(function(file, enc, cb) {
-      file._path = file.path
-      file.path = file.path.replace(srcEx, libFragment)
-      cb(null, file)
-    }))
-    .pipe(gulpIf(isDev, newer(dest)))
-    .pipe(through.obj(function(file, enc, cb) {
-      log(`Compiling", '${cyan(file._path)}'`)
-      cb(null, file)
-    }))
-    .pipe(babel())
-    .pipe(gulp.dest(dest));
+      .pipe(plumber({
+        errorHandler(err) {
+          log(err.stack)
+        }
+      }))
+      .pipe(through.obj(function(file, enc, cb) {
+        file._path = file.path
+        file.path = file.path.replace(srcEx, libFragment)
+        cb(null, file)
+      }))
+      .pipe(gulpIf(isDev, newer(dest)))
+      .pipe(through.obj(function(file, enc, cb) {
+        log(`Compiling", '${cyan(file._path)}'`)
+        cb(null, file)
+      }))
+      .pipe(babel())
+      .pipe(gulp.dest(dest))
   }
 }

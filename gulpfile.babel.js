@@ -18,11 +18,13 @@ try {
   const {srcDir} = sources
   const {isDev} = environment
   const {addbase} = utils
+  const pkgs = addbase('packages/*/src/**/*.js')
 
   gulp.task('ava', tasks.ava)
   gulp.task('babel', tasks.babel)
   gulp.task('browser-sync', tasks.browserSync)
   gulp.task('clean', tasks.clean)
+  gulp.task('flow', tasks.flow)
   gulp.task('lint:test', tasks.eslint)
   gulp.task('lint:build', tasks.eslint)
   gulp.task('lint', gulp.parallel('lint:test', 'lint:build'))
@@ -32,9 +34,11 @@ try {
   gulp.task('assemble', tasks.assemble)
 
   gulp.task('watch:build', () => {
+    gulp.watch(pkgs).on('change', gulp.series('flow'))
+
     gulp.watch([
+      pkgs,
       addbase('build/**/*.js'),
-      addbase('packages/*/src/**/*.js'),
       addbase('gulpfile.babel.js')
     ]).on('change', gulp.series('lint:build', 'babel'))
 
@@ -47,15 +51,32 @@ try {
     ]).on('change', browserSync.reload)
   })
 
-  gulp.task('dev', gulp.series('babel', 'lint', 'watch:build'))
+  gulp.task('dev', gulp.series(
+    'babel',
+    gulp.parallel('lint', 'flow'),
+    'watch:build'
+  ))
 
   gulp.task('build', (cb) => {
     let task
 
     if (isDev) {
-      task = gulp.series('clean', 'babel', 'lint', 'webpack', 'assemble', 'browser-sync')
+      task = gulp.series(
+        'clean',
+        'babel',
+        gulp.parallel('lint', 'flow'),
+        'webpack',
+        'assemble',
+        'browser-sync'
+      )
     } else {
-      task = gulp.series('clean', 'babel', 'lint', 'webpack', 'assemble')
+      task = gulp.series(
+        'clean',
+        'babel',
+        gulp.parallel('lint', 'flow'),
+        'webpack',
+        'assemble'
+      )
     }
 
     return task(cb)

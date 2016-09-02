@@ -6,7 +6,7 @@
   "scripts": {
     "start": "gulp babel && gulp build",
     "test": "gulp ava",
-    "flow": "flow; test $? -eq 0 -o $? -eq 2",
+    "flow": "flow check --lib ./declarations/; test $? -eq 0 -o $? -eq 2",
     "lint:fix": "eslint ./build/** ./packages/*/src/** ./packages/*/test/** gulpfile.babel.js --fix",
     "lerna:bootstrap": "lerna bootstrap",
     "lerna:init": "lerna init",

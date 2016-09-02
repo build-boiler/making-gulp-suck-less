@@ -11,7 +11,7 @@ export default class TaskHandler extends EventEmitter {
     this.config = config
   }
 
-  cli(opts) {
+  cli(opts = {}) {
     const data = cli(opts)
     const {flags} = data
     const cliData = Object.keys(flags).reduce((acc, key) => {

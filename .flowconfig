@@ -1,9 +1,9 @@
 [ignore]
-./packages/*/node_modules/*
-./node_modules/*
-.*/test/*
+<PROJECT_ROOT>/packages/*/(test|dist)/.*
 
 [include]
+<PROJECT_ROOT>/packages/*/src/.*
+<PROJECT_ROOT>/build/.*
 
 [libs]
 
