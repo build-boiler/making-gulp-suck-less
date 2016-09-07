@@ -21,7 +21,7 @@
     "gulp"
   ],
   "dependencies": {
-    "gulpy-boiler-load-plugins": "1.0.0",
+    "gulpy-boiler-load-plugins": "^1.0.0",
     "meow": "^3.7.0",
     "merge-deep": "^3.0.0"
   }

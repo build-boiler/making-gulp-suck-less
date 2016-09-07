@@ -21,10 +21,10 @@
     "gulp"
   ],
   "dependencies": {
-    "gulpy-boiler-add-task-target": "1.0.0",
-    "gulpy-boiler-config": "1.0.0",
-    "gulpy-boiler-lazy-task": "1.0.0",
-    "gulpy-boiler-load-plugins": "1.0.0",
-    "gulpy-boiler-require-dir": "1.0.0"
+    "gulpy-boiler-add-task-target": "^1.0.0",
+    "gulpy-boiler-config": "^1.0.0",
+    "gulpy-boiler-lazy-task": "^1.0.0",
+    "gulpy-boiler-load-plugins": "^1.0.0",
+    "gulpy-boiler-require-dir": "^1.0.0"
   }
 }

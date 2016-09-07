@@ -24,7 +24,7 @@
     "babel-plugin-rewire": "^1.0.0-rc-7",
     "dargs": "^5.0.1",
     "gulp-util": "^3.0.7",
-    "gulpy-boiler-utils": "1.0.0",
+    "gulpy-boiler-utils": "^1.0.0",
     "through2": "^2.0.1"
   }
 }
