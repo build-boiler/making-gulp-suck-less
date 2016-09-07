@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-gulpy-boiler",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Gulp suck-less boilerplate utility for lazy loading tasks and passing config",
   "main": "dist/index.js",
   "author": "DtotheFP",

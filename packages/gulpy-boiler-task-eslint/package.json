@@ -1,6 +1,6 @@
 {
   "name": "gulpy-boiler-task-eslint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Gulp suck-less boilerplate eslint task",
   "main": "dist/eslint.js",
   "author": "DtotheFP",
@@ -24,7 +24,7 @@
     "babel-eslint": "^6.1.2",
     "babel-plugin-transform-runtime": "^6.8.0",
     "eslint": "^3.4.0",
-    "eslint-config-gulpy-boiler": "^1.0.0",
+    "eslint-config-gulpy-boiler": "^1.0.1",
     "eslint-friendly-formatter": "^2.0.6",
     "eslint-plugin-ava": "^3.0.0",
     "eslint-plugin-babel": "^3.3.0",
