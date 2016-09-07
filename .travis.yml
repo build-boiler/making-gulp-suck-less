@@ -14,10 +14,15 @@ addons:
 install:
 - npm i -g npm@latest
 - npm i
+
+before_script:
+- export LERNA_VERSION==$(./version.sh)
 script:
 - npm run lerna:bootstrap
 - npm start
 - npm test
+after_script:
+- if [[ $TRAVIS_BRANCH == "master" ]]; then make publish_deb; fi
 cache:
   directories:
   - node_modules
