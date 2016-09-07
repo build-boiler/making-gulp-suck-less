@@ -19,10 +19,8 @@ before_script:
 - export LERNA_VERSION==$(./version.sh)
 script:
 - npm run lerna:bootstrap
-- npm start
-- npm test
+- if [[ $TRAVIS_BRANCH == "master" ]]; then npm run release; else npm start && npm test; fi
 after_script:
-- if [[ $TRAVIS_BRANCH == "master" ]]; then npm run release; fi
 cache:
   directories:
   - node_modules
